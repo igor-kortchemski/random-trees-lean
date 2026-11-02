@@ -1,0 +1,10 @@
+# Lake dependencies and build artifacts
+.lake/
+
+# Local reference manuscripts, development tools and roadmap drafts
+/papers/
+/lean-autoformalization-skills/
+/tauceti-roadmaps/
+
+# macOS metadata
+.DS_Store

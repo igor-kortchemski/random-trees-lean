@@ -1,0 +1,32 @@
+name: Lean CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Lean library
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up Lean and fetch Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: "false"
+          build: "false"
+          use-mathlib-cache: "true"
+      - name: Check all sources, public examples, axioms and documentation
+        run: python3 scripts/check.py
