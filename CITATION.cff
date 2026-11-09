@@ -5,6 +5,6 @@ title: "Random Trees in Lean"
 authors:
   - family-names: Kortchemski
     given-names: Igor
-version: "0.1.0"
+version: "0.1.1"
 license: Apache-2.0
 repository-code: "https://github.com/igor-kortchemski/random-trees-lean"

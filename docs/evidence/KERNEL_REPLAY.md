@@ -4,11 +4,9 @@ A local diagnostic, run on 9 November 2026 on macOS (4 cores, 24 GB). It is **no
 Comparator or a Palomar verification. It rechecks the compiled library with several kernels that
 are independent of the elaborator that produced the proofs.
 
-**Snapshot.** Commit `ab6f620` (the Lean sources are identical at `debea2f`), Lean 4.35.0
-(`eb6cafb7290e8bd5f2937522d8d804f58f02bafc`), Mathlib `56a005855ea17e0b0958f73ec801ae140b0a1679`.
-All checkers are the ones shipped with the pinned toolchain
-(`~/.elan/toolchains/leanprover--lean4---v4.35.0/bin`). Script:
-`.orchestration/kernel-replay/run.sh` (local, not committed).
+**Snapshot.** The replay used the Lean sources in `v0.1.0`, with Lean 4.35.0
+(`eb6cafb7290e8bd5f2937522d8d804f58f02bafc`) and Mathlib
+`56a005855ea17e0b0958f73ec801ae140b0a1679`.
 
 | Check | What it does | Result |
 | --- | --- | --- |
@@ -33,10 +31,3 @@ and its Mathlib closure) is accepted by four further checkers, three of them ind
 implementations (`con-leche`, `con-ron`, `lean4lean`). `nanoda` needs more memory than this machine
 has for an export of this size; splitting the export into smaller closures, or a larger machine,
 would be needed to complete it.
-
-**An artefact found and removed.** The first `leanchecker` run stopped in
-`BGW.StableTrees.DiscreteHeightApproxCycleMaximal`, a module that no longer exists: the build folder
-still held the compiled files of 26 temporary modules deleted during development, compiled against
-names that have since changed (`unknown constant BGW.StableTrees.DiscreteHeightApprox.measure_partialSum_maximal_le`).
-No source contains or imports them. Their 418 build files were removed from `.lake/build` and the
-replay was restarted; the library build was unaffected.

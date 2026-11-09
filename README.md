@@ -8,7 +8,7 @@ Gromov–Hausdorff–Prokhorov (GHP) geometry and continuum trees coded by conti
 Every proof is checked by Lean's kernel with only the standard axioms `propext`,
 `Classical.choice` and `Quot.sound`; the library sources contain no `sorry`.
 
-The library is in development (version `0.1.0`): names and module boundaries may still
+The library is in development (version `0.1.1`): names and module boundaries may still
 change, so downstream projects should pin a commit.
 
 **Where to find a result.** [CLASSICAL_THEORY_COVERAGE.md](CLASSICAL_THEORY_COVERAGE.md)
@@ -17,9 +17,7 @@ maps every item C1–C39 of the classical-theory specification
 the module to import, says whether each statement is exact, equivalent, corrected or left to a
 consumer, and ends with an import map for the article *Invariance principles for
 Galton–Watson trees conditioned on the number of leaves*. The
-[formalization report](FORMALIZATION_REPORT.md) records the verification, and
-[LEAN_LIBRARY_AUDIT.md](LEAN_LIBRARY_AUDIT.md) assesses the library for reuse, Mathlib and
-Tau Ceti.
+[formalization report](FORMALIZATION_REPORT.md) records the scope and verification.
 
 A first example:
 
@@ -66,28 +64,17 @@ These are module entry points of one package. Compiled consumer examples are in
 
 ## Getting the library
 
-The public repository is [random-trees-lean](https://github.com/igor-kortchemski/random-trees-lean).
-Choose a published commit that contains the library described here. The repository's
-initial snapshot predates the full scaling-limit development.
+Install [Elan](https://github.com/leanprover/elan), then clone and build release `v0.1.1`:
 
-1. Install [Elan](https://github.com/leanprover/elan) (it reads `lean-toolchain`).
-2. Clone the repository and replace `PUBLISHED_COMMIT` below with the full hash of the
-   chosen revision. Fetch the Mathlib cache and build the library.
+```sh
+git clone --branch v0.1.1 https://github.com/igor-kortchemski/random-trees-lean.git
+cd random-trees-lean
+lake exe cache get
+lake build
+```
 
-   ```sh
-   git clone https://github.com/igor-kortchemski/random-trees-lean.git
-   cd random-trees-lean
-   git switch --detach PUBLISHED_COMMIT
-   lake exe cache get
-   lake build
-   ```
-
-3. Optionally run the complete repository check (build, consumer examples, axiom audit and
-   documentation lint): `python3 scripts/check.py`.
-
-A local clone of the development branch passed the complete check on 8 November 2026.
-Fetching the pinned dependencies and the Mathlib cache worked, and the library built from
-scratch in about 42 minutes on a desktop machine.
+To run the build, consumer examples, axiom audit and documentation lint together, use
+`python3 scripts/check.py`.
 
 To use the library from another Lake project, use the same `lean-toolchain` and add one of
 these to its `lakefile.toml`, then run `lake update` and `lake exe cache get`:
@@ -98,17 +85,16 @@ these to its `lakefile.toml`, then run `lake update` and `lake exe cache get`:
 name = "bgw"
 path = "../random-trees-lean"
 
-# or a published commit (replace the revision by a full published commit hash)
+# or a published tag
 [[require]]
 name = "bgw"
 git = "https://github.com/igor-kortchemski/random-trees-lean.git"
-rev = "<full commit hash>"
+rev = "v0.1.1"
 ```
 
-The path form was tested on 8 November 2026 with a separate consumer project; Lake then
-resolves Mathlib and the vendored packages at this library's pinned revisions. The library
-uses Lean's module system: consumer files may start with `module` (as in the examples);
-a file without it still compiles, with one Lake warning per import.
+Lake resolves Mathlib and the vendored packages from the library's pinned configuration.
+The [verification notes](docs/evidence/README.md) describe the separate consumer build.
+The examples use Lean's module system and start with `module`.
 
 ## Main results
 
@@ -269,12 +255,9 @@ example : (ofIncrements? [1, -1, -1]).map size = some 3 := by
 `lake build` builds the library; `python3 scripts/check.py` runs the complete check. It builds
 every library and vendored module, compiles the consumer examples in `BGWTest/` with warnings
 as errors, audits every library and vendor constant (including private and generated ones) for
-the three allowed axioms, and runs `docBlame`. On 9 November 2026 the check passed in an isolated
-copy of `debea2f` with the existing build cache. It completed 4,426 Lake jobs, audited 12,925
-constants across 871 library and 30 vendored modules, and reported zero `docBlame` errors.
-The [kernel replay report](docs/evidence/KERNEL_REPLAY.md) records additional checks on the same
-Lean sources. The [coverage index](CLASSICAL_THEORY_COVERAGE.md) and
-[library audit](LEAN_LIBRARY_AUDIT.md) document the scope and statement reviews.
+the three allowed axioms, and runs `docBlame`. The published check audited 12,925 constants
+across 871 library and 30 vendored modules and reported zero `docBlame` errors.
+See the [verification notes](docs/evidence/README.md) for the build and independent kernel checks.
 
 `python3 scripts/lint_report.py` runs Mathlib's default environment linters (`#lint`) over the
 library; since 8 November 2026 it reports no finding (three definitions keep a documented
@@ -356,14 +339,9 @@ same Lean and Mathlib versions as the library.
 | [Classical-theory coverage](CLASSICAL_THEORY_COVERAGE.md) | C1–C39 mapped to exact declarations, with the article import map |
 | [Classical-theory specification](CLASSICAL_THEORY_INPUTS.md) | The informal statements C1–C39 and their corrections |
 | [Formalization report](FORMALIZATION_REPORT.md) | Coverage and verification record |
-| [Library audit](LEAN_LIBRARY_AUDIT.md) | Assessment for reuse, Mathlib and Tau Ceti, with a remediation plan |
 | [Changelog](CHANGELOG.md) | Notable changes and renamed declarations |
-| [Evidence](docs/evidence/README.md) | Audited statement contracts and freeze-record hashes |
+| [Verification](docs/evidence/README.md) | Build, axiom audit, and independent kernel replay |
 | [API documentation](docs/build/README.md) | How to generate the HTML documentation with doc-gen4 |
-
-The roadmaps describe planned work; the report and the coverage index identify what is
-implemented. References link to public manuscripts. Local copies of papers and development
-tools are excluded from the repository.
 
 ## Maintenance and releases
 
@@ -371,8 +349,7 @@ tools are excluded from the repository.
   [GitHub issues](https://github.com/igor-kortchemski/random-trees-lean/issues).
 - **Citation:** Cite the library using [CITATION.cff](CITATION.cff) and include the commit or
   release you used.
-- **Versions:** the library is pre-release (`0.1.0`). Releases will be tagged commits, each
-  passing `python3 scripts/check.py`, with its changes recorded in [CHANGELOG.md](CHANGELOG.md).
+- **Versions:** releases are tagged commits. See [CHANGELOG.md](CHANGELOG.md) for changes.
 - **Pins:** Lean and Mathlib are pinned exactly. An upgrade is its own commit that changes
   `lean-toolchain`, `lakefile.toml` and `lake-manifest.json` together and reruns the check.
 - **Breaking changes:** before `1.0` declarations may be renamed or moved; the changelog
@@ -384,14 +361,12 @@ Keep Lean and Mathlib pins in sync with `lean-toolchain`, `lakefile.toml` and
 `lake-manifest.json`; add imports at the narrowest useful module boundary. Document
 mathematical conventions and state clearly which results remain open. The common
 repository check is `python3 scripts/check.py`. Do not use `sorry` or introduce new
-axioms to close a proof. The [random-trees roadmap](RANDOM_TREES_ROADMAP.md) records
-shared priorities; the [formalization report](FORMALIZATION_REPORT.md) records results.
-Most of the code was written with AI assistance under the author's direction; contributions
-to Mathlib or Tau Ceti from it must follow their own AI policies (see the audit).
+axioms to close a proof. Keep the coverage index and formalization report in sync with
+changes to public declarations. The public tree contains the Lean library, examples, build
+and verification tools, licenses, and documentation for readers. Keep planning notes,
+review drafts, and campaign records in the development checkout.
 
-This independent project is intended to support a possible future integration
-into [Tau Ceti](https://github.com/TauCetiProject/TauCeti), subject to its roadmap
-and review process.
+Most of the code was written with AI assistance under the author's direction.
 
 ## License
 
