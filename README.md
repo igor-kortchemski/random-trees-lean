@@ -360,9 +360,6 @@ same Lean and Mathlib versions as the library.
 | [Changelog](CHANGELOG.md) | Notable changes and renamed declarations |
 | [Evidence](docs/evidence/README.md) | Audited statement contracts and freeze-record hashes |
 | [API documentation](docs/build/README.md) | How to generate the HTML documentation with doc-gen4 |
-| [Random Trees roadmap](RANDOM_TREES_ROADMAP.md) | Shared development plan for BGW, GHP, continuum and stable trees, with reusable sources |
-| [Targeted roadmap](BGW_ROADMAP_2607_22291.md) | Plan for rare subtree patterns and Poisson approximation |
-| [Broader roadmap](BGW_FORMALIZATION_ROADMAP.md) | Proposed scope across several BGW topics |
 
 The roadmaps describe planned work; the report and the coverage index identify what is
 implemented. References link to public manuscripts. Local copies of papers and development
