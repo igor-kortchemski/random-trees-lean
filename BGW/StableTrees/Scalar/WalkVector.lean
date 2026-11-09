@@ -147,3 +147,4 @@ theorem walkVecLaw_take (μ : PMF ℕ) {m n : ℕ} (hmn : m ≤ n) (H : List ℤ
   simpa only [and_true, Set.ofPred_true, measure_univ, mul_one] using h
 
 end BGW.StableTrees.Scalar
+

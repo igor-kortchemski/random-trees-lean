@@ -270,3 +270,4 @@ theorem limitLaw_unique {α : ℝ} (hα : 0 < α) {ν₁ ν₂ : Measure ℝ} [I
   rw [charFun_eq_stableCF hα h₁, charFun_eq_stableCF hα h₂]
 
 end BGW.StableTrees.Scalar
+

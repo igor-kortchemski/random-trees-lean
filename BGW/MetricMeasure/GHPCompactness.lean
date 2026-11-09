@@ -181,3 +181,4 @@ theorem isCompact_preimage_underlyingGH {A : Set GHSpace} (hA : IsCompact A) :
 
 end MeasuredGHSpace
 end BGW.MetricMeasure
+

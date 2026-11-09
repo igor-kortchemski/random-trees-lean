@@ -55,7 +55,7 @@ omit [Nonempty X] [Nonempty Y] in
 /-- A measured isometry always gives zero distance. The converse additionally
 requires proving that a zero-distance isometry can preserve the measures. -/
 theorem ghpDistance_eq_zero_of_measured_isometry
-    (μ : Measure X) (ν : Measure Y) [IsProbabilityMeasure μ]
+    (μ : Measure X) (ν : Measure Y)
     (e : X ≃ᵢ Y) (he : μ.map e = ν) : ghpDistance μ ν = 0 := by
   rw [← he, ghpDistance_map_isometryEquiv_right, ghpDistance_self]
 

@@ -8,3 +8,9 @@
 
 # macOS metadata
 .DS_Store
+
+# Campaign coordination (briefs, worker attempts, logs)
+/.orchestration/
+
+# Python bytecode
+__pycache__/

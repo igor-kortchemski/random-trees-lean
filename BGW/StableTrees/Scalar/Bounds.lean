@@ -171,3 +171,4 @@ theorem tight (h : StableDomain μ α a) {ε : ℝ} (hε : 0 < ε) :
     exact lt_of_le_of_lt (mul_le_mul_of_nonneg_right (le_max_right _ _) ham.le) hx
 
 end BGW.StableTrees.Scalar
+

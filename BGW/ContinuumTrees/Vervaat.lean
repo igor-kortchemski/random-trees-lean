@@ -126,17 +126,17 @@ noncomputable def rotate (g : C(unitInterval, ℝ)) (hloop : g 0 = g 1)
     (r t : unitInterval) : rotate g hloop r t = g (Coding.circularShift r t) := rfl
 
 @[simp] theorem rotate_zero (g : C(unitInterval, ℝ)) (hloop : g 0 = g 1)
-    (r : unitInterval) : rotate g hloop r 0 = g r := by
-  simpa only [rotate_apply, Coding.circularShift, Set.Icc.coe_zero, add_zero] using
+    (r : unitInterval) : g (Coding.circularShift r 0) = g r := by
+  simpa only [Coding.circularShift, Set.Icc.coe_zero, add_zero] using
     value_fract g hloop r
 
 @[simp] theorem rotate_one (g : C(unitInterval, ℝ)) (hloop : g 0 = g 1)
-    (r : unitInterval) : rotate g hloop r 1 = g r := by
+    (r : unitInterval) : g (Coding.circularShift r 1) = g r := by
   have hs : Coding.circularShift r 1 = Coding.circularShift r 0 := by
     apply Subtype.ext
     change Int.fract ((r : ℝ) + 1) = Int.fract ((r : ℝ) + 0)
     rw [Int.fract_add_one, add_zero]
-  rw [rotate_apply, hs]
+  rw [hs]
   exact rotate_zero g hloop r
 
 /-- Rotate a continuous loop at its first global minimum and subtract that minimum. -/
@@ -156,15 +156,13 @@ theorem vervaat_nonneg (g : {g : C(unitInterval, ℝ) // g 0 = g 1}) (t : unitIn
   exact sub_nonneg.mpr (globalMinimum_le g.1 _)
 
 @[simp] theorem vervaat_zero (g : {g : C(unitInterval, ℝ) // g 0 = g 1}) :
-    vervaat g 0 = 0 := by
-  change rotate g.1 g.2 (firstMinimum g.1) 0 - Coding.intervalMin g.1 0 1 = 0
-  rw [rotate_zero]
+    g.1 (Coding.circularShift (firstMinimum g.1) 0) - Coding.intervalMin g.1 0 1 = 0 := by
+  rw [rotate_zero g.1 g.2]
   exact sub_eq_zero.mpr (isLeast_firstMinimum g.1).1
 
 @[simp] theorem vervaat_one (g : {g : C(unitInterval, ℝ) // g 0 = g 1}) :
-    vervaat g 1 = 0 := by
-  change rotate g.1 g.2 (firstMinimum g.1) 1 - Coding.intervalMin g.1 0 1 = 0
-  rw [rotate_one]
+    g.1 (Coding.circularShift (firstMinimum g.1) 1) - Coding.intervalMin g.1 0 1 = 0 := by
+  rw [rotate_one g.1 g.2]
   exact sub_eq_zero.mpr (isLeast_firstMinimum g.1).1
 
 /-- Measurability of the Vervaat transformation on the subtype of continuous loops. -/

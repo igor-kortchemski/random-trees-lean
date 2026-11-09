@@ -212,3 +212,4 @@ theorem tendsto_maximal_tail {μ : PMF ℕ} {α : ℝ} {a : ℕ → ℝ}
     exact ((measureReal_mono hsub (measure_ne_top _ _)).trans (htail _ hn)).trans_lt (half_lt_self hx)
 
 end BGW.StableTrees.Scalar
+

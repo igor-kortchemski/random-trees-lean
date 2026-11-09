@@ -138,3 +138,4 @@ theorem isCompactSystem_compactClosedSquareCylinders :
   exact ⟨fun i ↦ if i ∈ s then t i else univ, by grind⟩
 
 end CompactClosedSquareCylinders
+

@@ -128,7 +128,7 @@ theorem rootedGHPDistance_triangle (μ : Measure X) (ν : Measure Y) (κ : Measu
   linarith
 
 /-- A rooted compact probability space has zero distance from itself. -/
-theorem rootedGHPDistance_self (μ : Measure X) [IsProbabilityMeasure μ] (x : X) :
+theorem rootedGHPDistance_self (μ : Measure X) (x : X) :
     rootedGHPDistance μ μ x x = 0 := by
   apply le_antisymm _ (rootedGHPDistance_nonneg μ μ x x)
   have h := rootedGHPDistance_le_of_isometries μ μ x x X id id isometry_id isometry_id

@@ -383,3 +383,4 @@ theorem walkLaw_real_singleton_lattice (hc : IsCritical μ) (hne : μ 1 ≠ 1) (
   ring
 
 end BGW.StableTrees.Scalar
+

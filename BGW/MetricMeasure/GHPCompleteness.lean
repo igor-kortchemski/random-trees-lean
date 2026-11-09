@@ -156,3 +156,4 @@ theorem polishSpace : PolishSpace MeasuredGHSpace.{u} := inferInstance
 
 end MeasuredGHSpace
 end BGW.MetricMeasure
+

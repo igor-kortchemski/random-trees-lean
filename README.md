@@ -1,10 +1,27 @@
 # Random Trees in Lean
 
-A Lean 4 library for finite and locally finite BGW trees, compact metric-measure
-geometry, continuum-tree coding and scalar stable-law tools. It is in development;
-the API may change, so downstream projects should pin a published commit.
+A Lean 4 library on random trees and the classical probability behind their scaling limits:
+finite and locally finite Bienaymé–Galton–Watson (BGW) trees, the Skorokhod space and
+weak-convergence tools, the spectrally positive stable Lévy process with its excursion theory
+and height process, the Duquesne–Le Gall scaling limits of BGW trees and forests,
+Gromov–Hausdorff–Prokhorov (GHP) geometry and continuum trees coded by continuous functions.
+Every proof is checked by Lean's kernel with only the standard axioms `propext`,
+`Classical.choice` and `Quot.sound`; the library sources contain no `sorry`.
 
-Start with this finite-tree consumer example:
+The library is in development (version `0.1.0`): names and module boundaries may still
+change, so downstream projects should pin a commit.
+
+**Where to find a result.** [CLASSICAL_THEORY_COVERAGE.md](CLASSICAL_THEORY_COVERAGE.md)
+maps every item C1–C39 of the classical-theory specification
+([CLASSICAL_THEORY_INPUTS.md](CLASSICAL_THEORY_INPUTS.md)) to the exact Lean declarations and
+the module to import, says whether each statement is exact, equivalent, corrected or left to a
+consumer, and ends with an import map for the article *Invariance principles for
+Galton–Watson trees conditioned on the number of leaves*. The
+[formalization report](FORMALIZATION_REPORT.md) records the verification, and
+[LEAN_LIBRARY_AUDIT.md](LEAN_LIBRARY_AUDIT.md) assesses the library for reuse, Mathlib and
+Tau Ceti.
+
+A first example:
 
 ```lean
 module
@@ -17,19 +34,19 @@ example : (node [leaf, leaf]).size = 3 := by
   simp
 ```
 
-The public aggregate imports the four areas. For smaller dependencies, start with:
+`import BGW` loads everything. For smaller dependencies, start with:
 
 | Area | Useful starting imports |
 | --- | --- |
 | BGW trees | `BGW.Tree`, `BGW.LocallyFinite.Law`, `BGW.LocallyFinite.SizeConditioning` |
+| Probability tools | `BGW.Probability` (weak convergence, Skorokhod representation, convergence in measure) |
+| Skorokhod space | `BGW.Skorokhod.Basic`, `BGW.Skorokhod.Measurable`, `BGW.Skorokhod.Tightness`, or `BGW.Skorokhod` |
+| Stable process, excursions, height, tree limits | the module named in the coverage index for each result, or `BGW.StableTrees` |
 | Metric-measure geometry | `BGW.MetricMeasure` |
 | Continuum trees | `BGW.ContinuumTrees.CodingMeasure`, `BGW.ContinuumTrees.ContourLawConvergence` |
-| Stable trees | `BGW.StableTrees` |
 
-These are module entry points rather than separate packages. See the [formalization
-report](FORMALIZATION_REPORT.md) for the verified scope and the detailed module table below.
-Checked public-consumer examples are in [BGWTest/Examples.lean](BGWTest/Examples.lean)
-and [BGWTest/Measurability.lean](BGWTest/Measurability.lean).
+These are module entry points of one package. Compiled consumer examples are in
+[BGWTest/](BGWTest/).
 
 ## Conventions
 
@@ -41,39 +58,61 @@ and [BGWTest/Measurability.lean](BGWTest/Measurability.lean).
 | Contour coding | Contours are rescaled to the unit interval |
 | GHP carrier and cost | Whole carrier retained even without full measure support; GHP costs use sums |
 | Extinction and size conditioning | Condition on positive-mass sizes; extinction is certain for mean at most one except the deterministic one-child law (`μ {1} = 1`) |
-| Brownian CRT normalization | The target convention is $T_{2e}$ for normalized excursion $e$ |
-| Stable index two | The finite-variance specialization uses variance $2$ |
+| Path spaces | `D T E`: càdlàg paths on `[0, T]` with the J1 metric; Billingsley's complete metric lives on the type synonym `DComplete T E` (same topology); `DLoc`: real càdlàg paths on `[0, ∞)` with the evaluation σ-algebra |
+| Stable index and normalization | `1 < θ ≤ 2`, spectrally positive, Laplace exponent `λ ^ θ` (`E e^{-λ X_t} = e^{t λ^θ}`); outside this range the stable laws are documented junk values |
+| Stable index two | `X = √2 B` (variance `2t`); the finite-variance specialization uses variance `2` |
+| Brownian CRT normalization | Aldous's CRT is coded by `2e`; the θ = 2 tree limit is coded by `√2 e` |
+| Tree scaling limits | C27–C29 hold for any admissible norming (the `…_of_attracted` theorems); the original exports take `StableDomain μ θ B`, a monotone positive norming |
 
-## Use from a sibling checkout
+## Getting the library
 
-For a local consumer beside this repository, add the valid path dependency below to
-its `lakefile.toml`. Use the same `lean-toolchain` and Mathlib revision as this library:
+The public repository is [random-trees-lean](https://github.com/igor-kortchemski/random-trees-lean).
+Choose a published commit that contains the library described here. The repository's
+initial snapshot predates the full scaling-limit development.
+
+1. Install [Elan](https://github.com/leanprover/elan) (it reads `lean-toolchain`).
+2. Clone the repository and replace `PUBLISHED_COMMIT` below with the full hash of the
+   chosen revision. Fetch the Mathlib cache and build the library.
+
+   ```sh
+   git clone https://github.com/igor-kortchemski/random-trees-lean.git
+   cd random-trees-lean
+   git switch --detach PUBLISHED_COMMIT
+   lake exe cache get
+   lake build
+   ```
+
+3. Optionally run the complete repository check (build, consumer examples, axiom audit and
+   documentation lint): `python3 scripts/check.py`.
+
+A local clone of the development branch passed the complete check on 8 November 2026.
+Fetching the pinned dependencies and the Mathlib cache worked, and the library built from
+scratch in about 42 minutes on a desktop machine.
+
+To use the library from another Lake project, use the same `lean-toolchain` and add one of
+these to its `lakefile.toml`, then run `lake update` and `lake exe cache get`:
 
 ```toml
+# a local checkout beside your project
 [[require]]
 name = "bgw"
 path = "../random-trees-lean"
+
+# or a published commit (replace the revision by a full published commit hash)
+[[require]]
+name = "bgw"
+git = "https://github.com/igor-kortchemski/random-trees-lean.git"
+rev = "<full commit hash>"
 ```
 
-The repository is [random-trees-lean](https://github.com/igor-kortchemski/random-trees-lean).
-For a Git dependency, use this repository URL and pin the complete commit SHA you
-intend to use. The Lake package remains `bgw` and Lean imports remain `BGW`.
+The path form was tested on 8 November 2026 with a separate consumer project; Lake then
+resolves Mathlib and the vendored packages at this library's pinned revisions. The library
+uses Lean's module system: consumer files may start with `module` (as in the examples);
+a file without it still compiles, with one Lake warning per import.
 
-This initial snapshot continues the development previously hosted in
-[Bienayme-Galton-Watson-Trees](https://github.com/igor-kortchemski/Bienayme-Galton-Watson-Trees),
-based on commit `d818312f05742621cf0c5b76fca124c93ff1572e`, with the subsequent
-locally verified additions described in the formalization report.
+## Main results
 
-## Contributing
-
-Keep Lean and Mathlib pins in sync with `lean-toolchain`, `lakefile.toml` and
-`lake-manifest.json`; add imports at the narrowest useful module boundary. Document
-mathematical conventions and state clearly which results remain open. The common
-repository check is `python3 scripts/check.py`. Do not use `sorry` or introduce new
-axioms to close a proof. The [random-trees roadmap](RANDOM_TREES_ROADMAP.md) records
-shared priorities; the [formalization report](FORMALIZATION_REPORT.md) records results.
-
-## Available foundations
+### Discrete trees and BGW laws
 
 - Finite rooted ordered trees with a list-of-children interface, structural
   induction and executable recursion.
@@ -114,13 +153,60 @@ shared priorities; the [formalization report](FORMALIZATION_REPORT.md) records r
 - Exact coding of ordered forests with `ℓ ≥ 1` components by forest codes (through an artificial
   root), the generalized cycle lemma (exactly `ℓ` good rotation indices, counted with
   multiplicity) and Kemperman's identity for forests `n P(|F| = n) = ℓ P(S_n = -ℓ)`.
-
 - Exponential tilting preserves size-conditioned laws; geometric offspring gives uniform plane
   trees at each positive size. Exact fringe-block decoding and uniform-fringe expectations
   are stated through finite-tree atoms. Discrete contours have unit steps and duration twice
   the number of edges. LCA gives the graph metric on present vertices. Conditioning may
   prescribe finitely many outdegree counts as well as total size. Contours in addresses
   have exact first-visit times and a continuous interpolation with the correct nodal heights.
+- Scalar stable local limits with their lattice factor, density identification, regular
+  variation and Potter/Karamata estimates, walk maximum tightness, uniform local, tail and
+  weighted forest estimates, two-sided size bounds at admissible sizes, and the Marchal
+  growth chain with its finite law.
+
+### Skorokhod space and weak convergence (C1–C14)
+
+- `D T E` with the J1 metric, separability, Billingsley's complete metric and Polishness, Borel
+  σ-field equal to the cylinder σ-field, the continuous paths as a subspace with uniform
+  convergence to continuous limits, and continuity of evaluation, restriction, stopping,
+  suprema, infima and time–space scaling.
+- Relative compactness and tightness (the modulus `w'`, Billingsley's Theorem 13.2, Aldous's
+  criterion), the continuous mapping theorem for almost everywhere continuous maps, converging
+  together and Slutsky on varying spaces, Billingsley's approximation theorem, determining
+  classes, Prokhorov's theorem and the Skorokhod representation.
+
+### Stable processes and excursion theory (C15–C25)
+
+- The θ-stable law, its density and transition kernels; the stable Lévy process as a law on
+  `D T ℝ` and on `DLoc`, characterized by its increments; the functional limit theorem for
+  walks in the stable domain of attraction, with Donsker's theorem for finite variance.
+- Regularity of `0`, first passage and Kendall's identity, the unique minimum, and the
+  θ = 2 instance `X = √2 B`.
+- The reflected process `X − I` with local time `−I` and its strong Markov property (for the
+  canonical filtration and its usual augmentation); Itô's excursion theorem with the excursion
+  measure `N`; the normalized excursion and `N(· | ζ > 1)`; the Markov property under `N`;
+  the `Γ_a` identity; Chaumont's path construction of the normalized excursion.
+
+### Height process and scaling limits of BGW trees (C26–C30)
+
+- The height process, its continuous modification and the excursion height `H^exc`.
+- The Duquesne–Le Gall forest theorem (joint convergence of the rescaled Łukasiewicz path,
+  height process and contour), the limit of trees with at least `n` vertices, and Duquesne's
+  theorem for trees with exactly `n` vertices (along admissible sizes), as functional limits
+  in law, for any admissible norming sequence (`BGW.StableTrees.NonmonotoneNorming`).
+- At θ = 2: `H^exc = X^exc = √2 e`, with `e` the Vervaat transform of the Brownian bridge,
+  and Aldous's normalization of the Brownian CRT.
+
+### Bridges, Vervaat transform and jumps (C31–C36)
+
+- The stable bridge on `D 1 ℝ`, its unique minimum attained continuously, the càdlàg Vervaat
+  map with its continuity at bridge-like paths and its discrete counterpart, and Chaumont's
+  identity `V(X^br) = X^exc` in law.
+- The largest-jump functional, 2-Lipschitz for J1; the normalized excursion has a positive jump
+  almost surely for θ < 2 and is continuous at θ = 2.
+
+### Metric-measure geometry and continuum trees (C37–C39)
+
 - Compact metric probability spaces modulo whole-carrier measured isometry, with the GHP
   metric, completeness, separability/Polishness and compactness/tightness transfer to GH.
   Measures need not have full support. Rooted GHP is also complete, separable and Polish;
@@ -129,16 +215,19 @@ shared priorities; the [formalization report](FORMALIZATION_REPORT.md) records r
   weak convergence.
 - The deterministic real-tree criterion from completeness, four points and midpoints, and
   the compact real tree coded by any continuous real function on the unit interval, rooted
-  at time zero with Lebesgue pushforward mass. The coding map is 6-Lipschitz in rooted GHP.
-- A constructed Brownian bridge with Gaussian residual independence and grid-invariance;
-  its minimum is negative almost surely, and minima on $[0,b]$ and $[c,d]$ are
-  almost surely unequal when $b<c\le d<1$. Continuous-minimum uniqueness, strict positivity of the Vervaat
-  transform, and identification with the standard Brownian CRT remain open.
-- Scalar stable local limits with their lattice factor, density identification, regular
-  variation and Potter/Karamata estimates, walk maximum tightness, and a constructed
-  finite-variance instance with index two. Uniform local/tail/weighted forest estimates
-  and two-sided size bounds retain admissibility where needed. Scalar attraction is explicit; these results
-  do not construct a stable process or a continuum tree law.
+  at time zero with Lebesgue pushforward mass, with Lipschitz bounds for GH and rooted GHP.
+- Transfer of contour convergence to convergence in law of rooted measured trees. The
+  uniform leaf measure has the same limit as the uniform vertex measure under the size ratio
+  and leaf distribution hypotheses in the coverage index.
+
+### Outside this library
+
+Six subclaims of the specification belong to the article that consumes the library (its
+leaf-conditioned specializations and a random time change); the coverage index lists them.
+Of the 35 labelled results of the rare-subtree paper arXiv:2607.22291, two are proved here
+in atomic form; that paper is a consumer, not a target of this library.
+
+## Tree interface
 
 Trees reuse Mathlib's `WType` internally in [BGW/Tree.lean](BGW/Tree.lean).
 The public interface exposes ordered lists of children: `induction` and `cases`
@@ -175,22 +264,24 @@ example : (ofIncrements? [1, -1, -1]).map size = some 3 := by
   decide
 ```
 
-## Building
+## Building and checking
 
-Install [Elan](https://github.com/leanprover/elan). From the repository root,
-`python3 scripts/check.py` runs the complete repository check; `lake build` is useful
-for the regular build during iteration. The check completed on 2 November 2026 with
-3,641 Lake jobs, 170 library modules and 3,175 constants; `docBlame` reported no
-missing documentation, and both public-consumer files passed. Its axiom audit found
-only Lean's standard axioms in the checked library declarations. This reports the
-checked library scope and is not a certification of all of Mathlib.
+`lake build` builds the library; `python3 scripts/check.py` runs the complete check. It builds
+every library and vendored module, compiles the consumer examples in `BGWTest/` with warnings
+as errors, audits every library and vendor constant (including private and generated ones) for
+the three allowed axioms, and runs `docBlame`. On 9 November 2026 the check passed in an isolated
+copy of `debea2f` with the existing build cache. It completed 4,426 Lake jobs, audited 12,925
+constants across 871 library and 30 vendored modules, and reported zero `docBlame` errors.
+The [kernel replay report](docs/evidence/KERNEL_REPLAY.md) records additional checks on the same
+Lean sources. The [coverage index](CLASSICAL_THEORY_COVERAGE.md) and
+[library audit](LEAN_LIBRARY_AUDIT.md) document the scope and statement reviews.
 
-```sh
-lake build
-```
+`python3 scripts/lint_report.py` runs Mathlib's default environment linters (`#lint`) over the
+library; since 8 November 2026 it reports no finding (three definitions keep a documented
+`nolint`, see the changelog). A non-blocking CI job also builds with Mathlib's standard linter set.
+API documentation can be generated with doc-gen4 from [docs/build/](docs/build/README.md).
 
-Keep Lean and Mathlib at the repository's pinned versions; do not upgrade dependencies
-as part of an unrelated change. For focused iteration, check one file with:
+For focused iteration, check one file with:
 
 ```sh
 lake env lean BGW.lean
@@ -202,14 +293,14 @@ The pinned environment is Lean **4.35.0** and Mathlib **v4.35.0**, at commit
 `56a005855ea17e0b0958f73ec801ae140b0a1679`. Keep
 [lean-toolchain](lean-toolchain), [lakefile.toml](lakefile.toml) and
 [lake-manifest.json](lake-manifest.json) together to reproduce these versions.
-[GitHub Actions](.github/workflows/lean.yml) runs the build on pushes and pull
+[GitHub Actions](.github/workflows/lean.yml) runs the complete check on pushes and pull
 requests, using the Mathlib cache.
 
-The Brownian construction uses two small source extractions under `vendor/`, with pinned
-upstream commits, licences and compatibility edits documented in their
-[BrownianMotion](vendor/brownian-motion/README.md) and
-[KolmogorovExtension4](vendor/kolmogorov-extension4/README.md) provenance notes.
-They use the same Lean and Mathlib versions as the library.
+The Brownian construction and the projective limit behind `DLoc` use two small source
+extractions under `vendor/`, with pinned upstream commits, licences and compatibility edits
+documented in their [BrownianMotion](vendor/brownian-motion/README.md) and
+[KolmogorovExtension4](vendor/kolmogorov-extension4/README.md) provenance notes. They use the
+same Lean and Mathlib versions as the library.
 
 ## Library and documentation
 
@@ -257,18 +348,46 @@ They use the same Lean and Mathlib versions as the library.
 | [Vertex geometry](BGW/Tree/Geometry.lean) | LCA and graph metric on present vertices |
 | [Contour](BGW/Tree/Contour.lean) | Executable discrete contour, duration and unit-step properties |
 | [Height](BGW/Tree/Height.lean) | Ancestors, fringe blocks and the Łukasiewicz-to-height identity |
+| [Probability](BGW/Probability.lean) | Weak convergence, Skorokhod representation, convergence in measure, tail and integral limits |
+| [Skorokhod](BGW/Skorokhod.lean) | `D T E`, J1 and Billingsley metrics, measurability, tightness, Vervaat map, jumps, `DLoc` |
 | [MetricMeasure](BGW/MetricMeasure.lean) | GHP quotients, unrooted Polishness, rooted separability/scaling, weak perturbation and sampled laws |
-| [ContinuumTrees](BGW/ContinuumTrees.lean) | Measured coding/rerooting, contour transfer, Brownian bridge and Vervaat-image laws |
-| [StableTrees](BGW/StableTrees.lean) | Scalar stable toolkit, finite-variance instance and forest/walk bridge |
-| [Formalization report](FORMALIZATION_REPORT.md) | Current coverage and verification record |
-| [Random Trees roadmap](RANDOM_TREES_ROADMAP.md) | Shared development plan for BGW, GHP, continuum and stable trees, with reusable sources |
-| [Claude handover](HANDOVER_CLAUDE.md) | Verified starting point and the next bounded implementation step |
-| [Targeted roadmap](BGW_ROADMAP_2607_22291.md) | Plan for rare subtree patterns and Poisson approximation |
-| [Broader roadmap](BGW_FORMALIZATION_ROADMAP.md) | Proposed scope across several BGW topics |
+| [ContinuumTrees](BGW/ContinuumTrees.lean) | Real trees, measured coding and rerooting, contour transfer, Brownian bridge and Vervaat-image laws, leaf measure |
+| [StableTrees](BGW/StableTrees.lean) | Stable laws and processes, excursion theory, height process, forest and conditioned-tree limits, stable bridge, Marchal chain |
+| [Classical-theory coverage](CLASSICAL_THEORY_COVERAGE.md) | C1–C39 mapped to exact declarations, with the article import map |
+| [Classical-theory specification](CLASSICAL_THEORY_INPUTS.md) | The informal statements C1–C39 and their corrections |
+| [Formalization report](FORMALIZATION_REPORT.md) | Coverage and verification record |
+| [Library audit](LEAN_LIBRARY_AUDIT.md) | Assessment for reuse, Mathlib and Tau Ceti, with a remediation plan |
+| [Changelog](CHANGELOG.md) | Notable changes and renamed declarations |
+| [Evidence](docs/evidence/README.md) | Audited statement contracts and freeze-record hashes |
+| [API documentation](docs/build/README.md) | How to generate the HTML documentation with doc-gen4 |
 
-The roadmaps describe planned work; the report identifies what is implemented.
-References link to public manuscripts. Local copies of papers and development
+The roadmaps describe planned work; the report and the coverage index identify what is
+implemented. References link to public manuscripts. Local copies of papers and development
 tools are excluded from the repository.
+
+## Maintenance and releases
+
+- **Maintainer:** Igor Kortchemski. Questions and reports go through
+  [GitHub issues](https://github.com/igor-kortchemski/random-trees-lean/issues).
+- **Citation:** Cite the library using [CITATION.cff](CITATION.cff) and include the commit or
+  release you used.
+- **Versions:** the library is pre-release (`0.1.0`). Releases will be tagged commits, each
+  passing `python3 scripts/check.py`, with its changes recorded in [CHANGELOG.md](CHANGELOG.md).
+- **Pins:** Lean and Mathlib are pinned exactly. An upgrade is its own commit that changes
+  `lean-toolchain`, `lakefile.toml` and `lake-manifest.json` together and reruns the check.
+- **Breaking changes:** before `1.0` declarations may be renamed or moved; the changelog
+  lists renamed and moved declarations with their new names.
+
+## Contributing
+
+Keep Lean and Mathlib pins in sync with `lean-toolchain`, `lakefile.toml` and
+`lake-manifest.json`; add imports at the narrowest useful module boundary. Document
+mathematical conventions and state clearly which results remain open. The common
+repository check is `python3 scripts/check.py`. Do not use `sorry` or introduce new
+axioms to close a proof. The [random-trees roadmap](RANDOM_TREES_ROADMAP.md) records
+shared priorities; the [formalization report](FORMALIZATION_REPORT.md) records results.
+Most of the code was written with AI assistance under the author's direction; contributions
+to Mathlib or Tau Ceti from it must follow their own AI policies (see the audit).
 
 This independent project is intended to support a possible future integration
 into [Tau Ceti](https://github.com/TauCetiProject/TauCeti), subject to its roadmap

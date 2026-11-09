@@ -267,3 +267,4 @@ theorem slowlyVarying (h : StableDomain μ α a) :
   field_simp
 
 end BGW.StableTrees.Scalar
+

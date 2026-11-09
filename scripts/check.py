@@ -41,6 +41,8 @@ import Batteries.Tactic.Lint
 /-! Generated project and vendor axiom audit, including private/generated constants. -/
 
 open Lean in
+set_option maxHeartbeats 0 in
+-- The audited module list of the whole library is one large array literal.
 run_cmd do
   let env := (← getEnv).setExporting false
   let expected : Array Name := #[{expected}]
@@ -77,6 +79,8 @@ def main() -> None:
     )
     run(*lean, "BGWTest/Examples.lean")
     run(*lean, "BGWTest/Measurability.lean")
+    run(*lean, "BGWTest/ScalingLimits.lean")
+    run(*lean, "BGWTest/ApiExamples.lean")
     # Generate imports from the current checkout, never from a hand-maintained manifest.
     with tempfile.TemporaryDirectory(prefix="bgw-check-") as temporary:
         audit = Path(temporary) / "Audit.lean"

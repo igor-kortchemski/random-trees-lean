@@ -37,7 +37,8 @@ open BGW.MetricMeasure
 
 namespace BGW.ContinuumTrees
 
-private theorem exists_uniform_oscillation_of_isCompact
+/-- A compact family of continuous contours is uniformly equicontinuous. -/
+theorem exists_uniform_oscillation_of_isCompact
     (K : Set C(unitInterval, ℝ)) (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ δ > 0, ∀ g ∈ K, ∀ s t : unitInterval,
       |(s : ℝ) - (t : ℝ)| ≤ δ → |g s - g t| ≤ ε := by
@@ -55,7 +56,9 @@ private theorem exists_uniform_oscillation_of_isCompact
 
 namespace FiniteTree
 
-private theorem exists_ratio_bound_on_compact
+/-- On a compact set of rescaled contours, a small divisor-to-size ratio controls the
+distance between a vertex-measured finite tree and its continuum contour coding. -/
+theorem exists_vertex_ratio_bound_on_compact
     (K : Set C(unitInterval, ℝ)) (hK : IsCompact K) {ε : ℝ} (hε : 0 < ε) :
     ∃ r > 0, ∀ (t : PlaneTree) (b : ℝ) (hb : 0 < b),
       1 ≤ b → b⁻¹ • t.contourFunction ∈ K → b / (t.size : ℝ) ≤ r →
@@ -152,7 +155,7 @@ theorem tendsto_rooted_laws_of_contour
       have hp' := ENNReal.toReal_mono ENNReal.ofReal_ne_top hp
       change ((μ n : Measure (Ω n)) ((G n) ⁻¹' Kᶜ)).toReal ≤ η / 2
       simpa only [ENNReal.toReal_ofReal (half_pos hη).le] using hp'
-    obtain ⟨r, hr, hgood⟩ := exists_ratio_bound_on_compact K hK hε
+    obtain ⟨r, hr, hgood⟩ := exists_vertex_ratio_bound_on_compact K hK hε
     have htail : ∀ᶠ n in atTop, (μ n : Measure (Ω n)).real
         {ω | r < b n / ((t n ω).size : ℝ)} < η / 2 :=
       (hratio r hr).eventually_lt_const (half_pos hη)

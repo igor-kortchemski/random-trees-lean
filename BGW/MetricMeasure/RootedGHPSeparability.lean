@@ -87,7 +87,7 @@ private theorem rootedGHPDistance_same_carrier_le
 private theorem rootedGHPDistance_le_of_finiteMeasuredCode_eq
     {X Y : Type u} [MetricSpace X] [MeasurableSpace X]
     [MetricSpace Y] [MeasurableSpace Y]
-    [Fintype X] [Fintype Y] [Nonempty X] [Nonempty Y] [BorelSpace X] [BorelSpace Y]
+    [Fintype X] [Fintype Y] [Nonempty X] [BorelSpace X] [BorelSpace Y]
     (μ : Measure X) (ν : Measure Y) [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
     {n : ℕ} (e : X ≃ Fin n) (f : Y ≃ Fin n) {ε : ℝ} (hε : 0 < ε)
     (hcode : finiteMeasuredCode μ e ε = finiteMeasuredCode ν f ε)
@@ -138,7 +138,7 @@ private theorem rootedGHPDistance_le_of_finiteMeasuredCode_eq
 private theorem rootedGHPDistance_le_of_sigma_finiteMeasuredCode_eq
     {X Y : Type u} [MetricSpace X] [MeasurableSpace X]
     [MetricSpace Y] [MeasurableSpace Y]
-    [Fintype X] [Fintype Y] [Nonempty X] [Nonempty Y] [BorelSpace X] [BorelSpace Y]
+    [Fintype X] [Fintype Y] [Nonempty X] [BorelSpace X] [BorelSpace Y]
     (μ : Measure X) (ν : Measure Y) [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
     {n m : ℕ} (e : X ≃ Fin n) (f : Y ≃ Fin m) {ε : ℝ} (hε : 0 < ε)
     (x : X) (y : Y)

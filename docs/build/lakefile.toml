@@ -1,0 +1,14 @@
+name = "bgwdocs"
+version = "0.1.0"
+
+# Separate project so that the library's own manifest and pins stay unchanged.
+
+[[require]]
+name = "bgw"
+path = "../.."
+
+[[require]]
+name = "«doc-gen4»"
+git = "https://github.com/leanprover/doc-gen4"
+# tag v4.35.0, matching lean-toolchain
+rev = "0e1ffe2e4ba5ecfdfaf15c65b8d3805dbb7134ae"

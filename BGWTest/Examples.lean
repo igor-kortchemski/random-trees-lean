@@ -19,6 +19,13 @@ open BGW BGW.PlaneTree MeasureTheory
 example : (node [leaf, leaf]).size = 3 := by
   simp
 
+-- The two README snippets of "Tree interface", kept compiled.
+example : (node [leaf, leaf]).increments = [1, -1, -1] := by
+  simp [leaf]
+
+example : (ofIncrements? [1, -1, -1]).map size = some 3 := by
+  decide
+
 example (s t : PlaneTree) (h : s.children = t.children) : s = t := by
   ext1
   exact h

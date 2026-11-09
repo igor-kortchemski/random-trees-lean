@@ -89,3 +89,4 @@ theorem exists_probabilityMeasure_on_compact (ν : ProbabilityMeasure X)
     ((mem_ae_iff_prob_eq_one L.isCompact.measurableSet).mpr hν)
 
 end BGW.MetricMeasure
+

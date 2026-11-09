@@ -182,3 +182,4 @@ theorem stableDensity_zero_pos (hα : 1 < α ∧ α ≤ 2) : 0 < stableDensity �
   nlinarith [Real.pi_pos]
 
 end BGW.StableTrees.Scalar
+

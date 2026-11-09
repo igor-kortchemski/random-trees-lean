@@ -98,18 +98,18 @@ theorem circularProjection_surjective (g : C(unitInterval, ℝ)) (r : unitInterv
 
 @[simp] theorem circularProjection_zero (g : C(unitInterval, ℝ)) (r : unitInterval)
     (hg : ∀ t, 0 ≤ g t) (h0 : g 0 = 0) (h1 : g 1 = 0) :
-    circularProjection g r hg h0 h1 0 = projection g r := by
-  simpa only [circularProjection_apply, circularShift, Set.Icc.coe_zero, add_zero] using
+    projection g (circularShift r 0) = projection g r := by
+  simpa only [circularShift, Set.Icc.coe_zero, add_zero] using
     projection_fract g hg h0 h1 r
 
 @[simp] theorem circularProjection_one (g : C(unitInterval, ℝ)) (r : unitInterval)
     (hg : ∀ t, 0 ≤ g t) (h0 : g 0 = 0) (h1 : g 1 = 0) :
-    circularProjection g r hg h0 h1 1 = projection g r := by
+    projection g (circularShift r 1) = projection g r := by
   have hs : circularShift r 1 = circularShift r 0 := by
     apply Subtype.ext
     change Int.fract ((r : ℝ) + 1) = Int.fract ((r : ℝ) + 0)
     rw [Int.fract_add_one, add_zero]
-  rw [circularProjection_apply, hs]
+  rw [hs]
   exact circularProjection_zero g r hg h0 h1
 
 /-- The continuous function recording distance from the new root during circular traversal. -/
@@ -131,15 +131,15 @@ theorem reroot_nonneg (g : C(unitInterval, ℝ)) (r : unitInterval)
 
 @[simp] theorem reroot_zero (g : C(unitInterval, ℝ)) (r : unitInterval)
     (hg : ∀ t, 0 ≤ g t) (h0 : g 0 = 0) (h1 : g 1 = 0) :
-    reroot g r hg h0 h1 0 = 0 := by
-  change dist (projection g r) (circularProjection g r hg h0 h1 0) = 0
-  rw [circularProjection_zero, dist_self]
+    codingDist g r (circularShift r 0) = 0 := by
+  change dist (projection g r) (projection g (circularShift r 0)) = 0
+  rw [circularProjection_zero g r hg h0 h1, dist_self]
 
 @[simp] theorem reroot_one (g : C(unitInterval, ℝ)) (r : unitInterval)
     (hg : ∀ t, 0 ≤ g t) (h0 : g 0 = 0) (h1 : g 1 = 0) :
-    reroot g r hg h0 h1 1 = 0 := by
-  change dist (projection g r) (circularProjection g r hg h0 h1 1) = 0
-  rw [circularProjection_one, dist_self]
+    codingDist g r (circularShift r 1) = 0 := by
+  change dist (projection g r) (projection g (circularShift r 1)) = 0
+  rw [circularProjection_one g r hg h0 h1, dist_self]
 
 private theorem intervalMin_subinterval (g : C(unitInterval, ℝ)) {a b c d : unitInterval}
     (h : uIcc a b ⊆ uIcc c d) : intervalMin g c d ≤ intervalMin g a b := by

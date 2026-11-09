@@ -490,3 +490,4 @@ theorem exists_potter_global (hrv : RegularlyVaryingSeq ρ a) (hmono : Monotone 
 end RegularlyVaryingSeq
 
 end BGW.StableTrees
+

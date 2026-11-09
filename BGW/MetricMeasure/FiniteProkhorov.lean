@@ -105,3 +105,4 @@ theorem levyProkhorovDist_le_of_finiteWeightCode_eq [Nonempty X]
   rwa [he] at h
 
 end BGW.MetricMeasure
+

@@ -75,7 +75,7 @@ noncomputable def mass (t : PlaneTree) : ProbabilityMeasure (Vertex t) := by
     (mass t : Measure (Vertex t)) = Measure.uniformOfFinset Finset.univ := rfl
 
 /-- Each present vertex has the same positive mass, regardless of its degree. -/
-@[simp] theorem mass_singleton (t : PlaneTree) (u : Vertex t) :
+theorem mass_singleton (t : PlaneTree) (u : Vertex t) :
     (mass t : Measure (Vertex t)) {u} = (t.size : ℝ≥0∞)⁻¹ := by
   rw [coe_mass, Measure.uniformOfFinset_apply_singleton]
   simp only [Finset.mem_univ, ite_true, Finset.card_univ, card_vertex]
