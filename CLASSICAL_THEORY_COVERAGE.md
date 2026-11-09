@@ -1,8 +1,8 @@
 # Coverage of the classical-theory specification (C1–C39)
 
-This document reconciles every item and every subclaim of [CLASSICAL_THEORY_INPUTS.md](CLASSICAL_THEORY_INPUTS.md) (items C1–C39; specification snapshot SHA-256 `a72b7467be88117460bd288052fbf982b8e0d9eb8943f3a709680dee69e91a7e`, as recorded in [RANDOM_TREES_ROADMAP.md](RANDOM_TREES_ROADMAP.md) §8.1) against the exact Lean exports on branch `campaign/random-trees` at commit `e7d9564`. It is the final reconciliation required by CT10 and the declaration map required by CT9 of the roadmap §8.
-
-Method. Three auditors read the Lean sources independently of the report, one per range of items (C1–C14, C15–C26, C27–C39). Each declaration name below was checked in the source of `BGW/` at the stated commit, and the statement was read, not only the name. The audited contracts (`.orchestration/contracts/`) and the freeze records in `~/LeanFormalization/BGW-campaign-records/freeze/` were used as evidence of the audited public statements. The rows of nine gaps closed after the first reconciliation (C5.4 converse, C7 and C11.2 on $C_T$, C33.3b, C36.a4, C20.1, C22, C25, C39.g5) were updated to the declarations of commits `e7d9564` and `e1dcb5c`. Declaration names are fully qualified; the Module column gives the file in which the cited declarations currently live (helper lemmas moved by commit `7334c52` into `BGW/Probability/` and `BGW/Skorokhod/` keep their fully qualified names), so that `import <module>` suffices. No build or Lean run was made to produce this document.
+The tables map the [classical theory inputs](CLASSICAL_THEORY_INPUTS.md) to Lean
+declarations. The Module column gives the import for each result. The remaining
+article-specific obligations are listed below the tables.
 
 Status vocabulary.
 
@@ -11,8 +11,6 @@ Status vocabulary.
 - CORRECTED (letter): the audited statement differs from the specification because the specified statement was false or vacuous; the letter is the entry (a)–(m) in the section "Statement corrections" of [FORMALIZATION_REPORT.md](FORMALIZATION_REPORT.md). Corrections (g)–(m) concern contracts and proof routes (C28.b, C26, C27) and are not subclaim rows.
 - BYPASSED: an alternative proof route does not use the specified argument; the Notes quote why the item does not require it. Bypassing does not remove a stated theorem: where a subclaim is itself an independent theorem its row is delivered.
 - ARTICLE-SIDE: the subclaim belongs to the article's own layer; BGW supplies the stated ingredients (section "Remaining obligations").
-- IN PROGRESS: a node is running and no export exists yet.
-- OPEN: no export found and none planned for the item; no row has this status.
 
 Counts below are rows of the per-item tables (one row per subclaim, including unnumbered and corrected ones); a row is counted by the first word of its status. Mixed rows C30.a3 and C33.5 (delivered, with an article-side half) are counted as delivered and listed under "Remaining obligations".
 
@@ -29,7 +27,7 @@ Counts below are rows of the per-item tables (one row per subclaim, including un
 
 ## Summary by item
 
-"Overall" is the worst row status of the item: delivered unless a row is article-side or in progress. "Corr." lists the audit corrections (a)–(m) that touch the item.
+"Overall" is the status of the item, with article-side obligations identified separately. "Corr." lists the audit corrections (a)–(m) that touch the item.
 
 | Item | Overall | Rows | Corr. | Main modules |
 | --- | --- | --- | --- | --- |
@@ -289,7 +287,7 @@ Functional limit theorem for walks in the stable domain.
 | C17.main-Donsker | θ=2 finite-variance instance | DELIVERED (exact) (extra) | `BGW.StableTrees.tendsto_stepPathLaw_wienerD_of_finiteVariance` | `BGW.StableTrees.StableProcessBrownian` |  |
 | C17.i | same along any subsequence | DELIVERED (exact) | `BGW.StableTrees.IsRealStableAttracted.tendsto_stepPathLaw_subseq` | `BGW.StableTrees.StableProcessLaw` |  |
 | C17.ii | `B_{⌊nt⌋}/B_n → t^{1/θ}` | DELIVERED (exact) | `BGW.StableTrees.IsRealStableAttracted.tendsto_norming_floor_ratio`, general `BGW.StableTrees.IsRealStableAttracted.tendsto_norming_ratio` | `BGW.StableTrees.StableProcessCompactness`, `BGW.StableTrees.RealAttraction` | `m_j/q_j → c>0 ⇒ B(m_j)/B(q_j) → c^{1/θ}` |
-| C17.iii | random time change + Lemma 6.2(i) ⇒ Lemma 6.2(ii) | ARTICLE-SIDE | none (deterministic ingredients only: `BGW.Skorokhod.timeSpaceScale`, continuity of scaling maps) | `BGW.Skorokhod.Scaling` | Report "Open, CT5": "The random scalar time and space perturbation of the source remains a consumer obligation (blueprint Node 21)". The paper's Lemma 6.2 layer; C6(4) is the other worker's range |
+| C17.iii | random time change + Lemma 6.2(i) ⇒ Lemma 6.2(ii) | ARTICLE-SIDE | none (deterministic ingredients only: `BGW.Skorokhod.timeSpaceScale`, continuity of scaling maps) | `BGW.Skorokhod.Scaling` | The random scalar time and space perturbation belongs to the proof of the article's Lemma 6.2(ii). |
 
 ### C18
 
@@ -419,7 +417,7 @@ Duquesne--Le Gall forest theorem (unconditioned joint $(W,H,C)$).
 | C27.d | Needed variant: `(V,H)` pair for every `T`; C not needed | DELIVERED (stronger) | `BGW.StableTrees.ForestTriple.tendsto_forestTripleLaw`, `BGW.StableTrees.ForestTriple.forestTripleLaw_map_pair` | `BGW.StableTrees.ForestTriple` | Pair marginal agrees with the sealed K11 forest pair law; C28 consumes the pair. |
 | C27.g1 | DLG index theorems by space scale `p`; conversion to "all n with `B_n`" | BYPASSED | none (not an export) | — | Spec (g) pitfall, not a claim. Proof goes through the project's own walk/height limit (C17, C26) plus a Slutsky step (`BGW.StableTrees.ForestContour.dist_forestContourPath_forestHeightPath`), so no `p(n) ≈ B_n` conversion is needed. |
 | C27.g2 | Step height `H_{⌊nt⌋}` (DLG) versus interpolated height (paper) are equivalent | BYPASSED | none | — | Only the interpolated form is exported (the paper's form). The step form is not needed by C28. |
-| C27.opt | Unpadded contour clock (optional) | DELIVERED (equivalent, comparison only) | `BGW.StableTrees.ForestContour.forestContourUnpadded`, `BGW.StableTrees.ForestContour.unpadded_contour_error_tendstoInMeasure`, `BGW.StableTrees.ForestContour.ae_tendsto_unpaddedStart` | `BGW.StableTrees.UnpaddedContourClock`, `BGW.StableTrees.UnpaddedContour` | Convergence in measure of padded minus unpadded error; no joint-triple statement with the unpadded contour is exported. Not required by spec (a). Report (l) correct: "K12c" delivered. |
+| C27.opt | Unpadded contour clock (optional) | DELIVERED (equivalent, comparison only) | `BGW.StableTrees.ForestContour.forestContourUnpadded`, `BGW.StableTrees.ForestContour.unpadded_contour_error_tendstoInMeasure`, `BGW.StableTrees.ForestContour.ae_tendsto_unpaddedStart` | `BGW.StableTrees.UnpaddedContourClock`, `BGW.StableTrees.UnpaddedContour` | Convergence in measure of padded minus unpadded error; no joint-triple statement with the unpadded contour is exported. Not required by spec (a). |
 
 ### C28
 
@@ -502,7 +500,7 @@ Càdlàg Vervaat map $V$ and its discrete correspondence.
 | C33.def | Definition of `g_1` and `V` (formulas, with `ω(0−):=ω(0)`, `−ω(0)` correction on wrap) | DELIVERED (exact) | `BGW.Skorokhod.vervaatTime`, `BGW.Skorokhod.vervaatD`, `BGW.Skorokhod.exists_min_leftLim`, `BGW.Skorokhod.min_leftLim_vervaatTime`, `BGW.Skorokhod.vervaatTime_le` | `BGW.Skorokhod.Vervaat`, `BGW.Skorokhod.VervaatRotate` | `vervaatD f t = f(g+t) − m` if `g+t ≤ 1`, else `f(g+t−1) + f 1 − m − f 0`. `g_1` is the first attainment time (`BGW.Skorokhod.vervaatTime_le`). |
 | C33.1 | `V(ω) ∈ D_1(ℝ)` | DELIVERED (exact) | `BGW.Skorokhod.vervaatD` (structure field `isCadlag'`; proved by the private helper `isCadlag_rotate`) | `BGW.Skorokhod.VervaatRotate` | By the type `D 1 ℝ`. |
 | C33.2 | `V(ω)(0) = ω(g_1) − m`, zero iff infimum attained as a value at `g_1` | DELIVERED (by definition; named lemma only for the continuity case) | `BGW.Skorokhod.vervaatD`, `BGW.Skorokhod.vervaatD_zero_of_continuousAt` | `BGW.Skorokhod.VervaatRotate`, `BGW.Skorokhod.VervaatContinuity` | No named lemma for the iff in general; the formula is `rfl`-level. The needed case ("continuous at g gives 0") is exported. |
-| C33.3a | If ω continuous at `g_1`: `V(ω)(1) = V(ω)(1−) = ω(1) − ω(0)` | CORRECTED (premise `0 < g_1` added; roadmap §8.3 endpoint flaw, correction letter (d) in the report) | `BGW.Skorokhod.vervaatD_one_of_continuousAt` | `BGW.Skorokhod.VervaatContinuity` | Statement: `0 < vervaatTime f` and `ContinuousAt f g` give `vervaatD f 1 = f 1 − f 0` and `ContinuousAt (vervaatD f) 1`. Counterexample in the docstring (`f t = t`, `f 1 = 2`). |
+| C33.3a | If ω continuous at `g_1`: `V(ω)(1) = V(ω)(1−) = ω(1) − ω(0)` | CORRECTED (premise `0 < g_1` added; see correction (d) in the report) | `BGW.Skorokhod.vervaatD_one_of_continuousAt` | `BGW.Skorokhod.VervaatContinuity` | Statement: `0 < vervaatTime f` and `ContinuousAt f g` give `vervaatD f 1 = f 1 − f 0` and `ContinuousAt (vervaatD f) 1`. Counterexample in the docstring (`f t = t`, `f 1 = 2`). |
 | C33.3b | The only jump of `V(ω)` not coming from a jump of `ω` is at `1 − g_1`, of size `ω(1) − ω(1−)` | DELIVERED (exact) | `BGW.Skorokhod.vervaatD_wrap`, `BGW.Skorokhod.leftLim_vervaatD_wrap`, `BGW.Skorokhod.vervaatD_wrap_sub_leftLim`, `BGW.Skorokhod.vervaatD_jump_of_ne_wrap` (with `BGW.Skorokhod.vervaatWrapTime`) | `BGW.Skorokhod.OptionalGaps` | `vervaatWrapTime f = 1 − g_1`; the signed jump of `vervaatD f` at the wrap time equals `f 1 − leftLim f 1` (premise `0 < 1 − g_1`), and away from the wrap time (`t > 0`) the jump of `vervaatD f` at `t` is the jump of `f` at the rotated time `g_1 + t` modulo 1. The special case `BGW.Skorokhod.continuousAt_vervaatD_wrap` remains. Commit `e7d9564`. |
 | C33.4 | `V` is Borel (or a.e. measurable) | DELIVERED (exact; stronger than a.e.) | `BGW.Skorokhod.measurable_vervaatD`, `BGW.Skorokhod.vervaatTime_le_iff_prefix_inf` | `BGW.Skorokhod.VervaatMeasurable` | Borel, via C4 route. |
 | C33.5 | Discrete correspondence `V(ω_x) = ω_{𝐕(x)}`, `g_1(ω_x) = i_*/k`, assumption `min_{1≤j≤k} w_j < 0` | DELIVERED (exact) | `BGW.Skorokhod.vervaatD_stepPath`, `BGW.Skorokhod.vervaatTime_stepPath`, `BGW.Skorokhod.stepPath`, `BGW.Skorokhod.vervaatIndex`, `BGW.Skorokhod.isTreeExcursion_rotate_vervaatIndex` | `BGW.Skorokhod.VervaatStep` | Hypothesis `∃ j, 1 ≤ j ≤ length ∧ (take j).sum < 0`. Conclusion: `vervaatD (stepPath x B) = stepPath (x.rotate (vervaatIndex x)) B`. `BGW.Skorokhod.vervaatIndex` is the first `i ∈ [1,k]` minimizing the partial sum (Def. 6.3). The spec's `BGWLeaves.vervaat (Vervaat/Defs.lean)` is in the article companion: identifying `x.rotate (vervaatIndex x)` with the article's `vervaat` is ARTICLE-SIDE glue (BGW has the rotation form). |
@@ -550,7 +548,7 @@ Real tree coded by $g\in C$; GH and GHP Lipschitz bounds.
 | --- | --- | --- | --- | --- | --- |
 | C37.a1 | `T_g` compact real tree, rooted at class of 0, mass = image of Lebesgue | DELIVERED (exact; pre-existing) | `BGW.ContinuumTrees.Coding.isRealTree`, `BGW.ContinuumTrees.Coding.fourPoint`, `BGW.ContinuumTrees.Coding.hasMidpoints`, `BGW.ContinuumTrees.Coding.root`, `BGW.ContinuumTrees.Coding.mass`, `BGW.ContinuumTrees.Coding.rootedCompactMeasuredSpace` | `BGW.ContinuumTrees.CodingRealTree`, `BGW.ContinuumTrees.CodingMeasure` | The specification records BGW as already having it; the compactness instance was not re-audited. |
 | C37.a2 | `g ↦ T_g` Lipschitz for rooted measured GHP, constant 6 | DELIVERED (exact; pre-existing) | `BGW.ContinuumTrees.Coding.lipschitzWith_rootedMeasuredGHSpace` (`LipschitzWith 6 rootedMeasuredGHSpace`) | `BGW.ContinuumTrees.CodingStability` |  |
-| C37.a3 | `g ↦ T_g` 2-Lipschitz for GH (Le Gall 2005, Lemma 2.4) | DELIVERED (exact) | `BGW.ContinuumTrees.Coding.ghDist_le_two_mul_norm`, `BGW.ContinuumTrees.Coding.lipschitzWith_two_toGHSpace` | `BGW.ContinuumTrees.CodingGH` | `ghDist (Space g) (Space h) ≤ 2 ‖g − h‖`. Report row "CT.C37 items 4–5". |
+| C37.a3 | `g ↦ T_g` 2-Lipschitz for GH (Le Gall 2005, Lemma 2.4) | DELIVERED (exact) | `BGW.ContinuumTrees.Coding.ghDist_le_two_mul_norm`, `BGW.ContinuumTrees.Coding.lipschitzWith_two_toGHSpace` | `BGW.ContinuumTrees.CodingGH` | `ghDist (Space g) (Space h) ≤ 2 ‖g − h‖`. |
 | C37.a4 | θ-stable tree is `T_{H^exc}` | DELIVERED (by definition) | `BGW.StableTrees.BrownianIdentification.stableTreeLaw_two` (shape `(excLaw θ).map (rootedMeasuredGHSpace ∘ Prod.snd)`) | `BGW.StableTrees.FiniteVarianceContour` | No named `stableTreeLaw θ` def; the expression is used literally (definition in Duquesne 2003). |
 | C37.d | To add: forgetful map rooted measured GHP → GH is 1-Lipschitz | DELIVERED (exact) | `BGW.MetricMeasure.RootedMeasuredGHSpace.lipschitzWith_underlyingGH_forgetRoot`, `BGW.ContinuumTrees.Coding.forgetToGH`, `BGW.ContinuumTrees.Coding.continuous_forgetToGH`, `BGW.ContinuumTrees.Coding.underlyingGH_forgetRoot_rootedMeasuredGHSpace`, `BGW.ContinuumTrees.Coding.tendsto_map_forgetToGH` | `BGW.ContinuumTrees.CodingGH`, `BGW.ContinuumTrees.CodingGHCompat` | `LipschitzWith 1 (underlyingGH ∘ forgetRoot)`. Law-level `BGW.ContinuumTrees.Coding.tendsto_map_forgetToGH` is the GH claim after 5.10. |
 
@@ -577,9 +575,9 @@ Uniform leaf measure versus uniform vertex measure.
 | C39.g3 | Deterministic bound `d_P^{(c·d_gr)}(m_V,m_L) ≤ c(2ω_H(δ)+2) + δ'` | DELIVERED (equivalent, deterministic generic form; different constants and no random layer) | `BGW.ContinuumTrees.LeafMeasure.levyProkhorovDist_map_projection_le_of_coupling`, `BGW.ContinuumTrees.LeafMeasure.levyProkhorovDist_vertex_leaf_le`, `BGW.ContinuumTrees.LeafMeasure.levyProkhorovDist_mass_leafMass_le` | `BGW.ContinuumTrees.LeafMeasure` | Coded-tree form `≤ 2ω` for the vertex/leaf-time measures with `D` bounding `\|ℓ k/n − k/N\|` and `ω` bounding the oscillation of `g` at scale `D+1/N+1/n`; plane-tree adapter `≤ 2ω` with scale `D + 1/N + 2A + 3/n`. Coupling statement `≤ max δ' (2ω)` has the bad-event mass `δ'`. Distance is the unscaled graph metric: no exported scaled `c·d_gr` form. The `+2` is absorbed (contour isometry). |
 | C39.g4 | Convergence consequence under leaf-index discrepancy `D_j → 0` and equicontinuity | DELIVERED (exact, deterministic, generic library theorem) | `BGW.ContinuumTrees.LeafMeasure.tendsto_levyProkhorovDist_vertex_leaf`, `BGW.ContinuumTrees.LeafMeasure.tendsto_levyProkhorovDist_vertex_leaf_of_tendsto` | `BGW.ContinuumTrees.LeafMeasure` | Sequences of coding functions `g j`, `n j`, `N j → ∞`, `ℓ j`; hypotheses are a contour-modulus asymptotic equicontinuity, not a height modulus. A one-shot plane-tree bound exists, but no sequence-of-plane-trees convergence statement. |
 | C39.g5 | Law-level transfer of C38 to the leaf measure (BGW perturbation C10(1)): rooted measured trees `(t_n, uniform leaf measure)` converge in law to the same limit | DELIVERED (exact) | `BGW.ContinuumTrees.LeafMeasure.tendsto_rooted_leaf_laws_of_contour`, `BGW.ContinuumTrees.LeafMeasure.tendsto_rooted_leaf_laws_of_contour_of_top`, `BGW.ContinuumTrees.LeafMeasure.leafRootedCompactMeasuredSpace`, `BGW.ContinuumTrees.LeafMeasure.dist_scale_leaf_vertex_le`, `BGW.ContinuumTrees.LeafMeasure.leafIndex_numLeaves_sub_one` | `BGW.ContinuumTrees.LeafLawConvergence`, `BGW.ContinuumTrees.LeafLawConvergenceDeterministic` | Law-level transfer of C38 to the uniform leaf measure: contour laws converge, `b n → ∞`, the ratio `b n / size` tends to 0 in probability and the leaf-index discrepancy (`hleaf`) tends to 0 in probability; the rescaled trees carrying the leaf measure then converge in law in the rooted measured GHP space to `ν.map Coding.rootedMeasuredGHSpace`, as for the vertex measure. The `_of_top` form takes `⊤`-measurable random trees. Commit `e7d9564`. |
-| C39.c | Cor. 3.3 (`cor_Lambda`) makes `δ → 0` in probability | ARTICLE-SIDE | none | — | Article's own lemma (not importable by BGW per roadmap CT9). |
+| C39.c | Cor. 3.3 (`cor_Lambda`) makes `δ → 0` in probability | ARTICLE-SIDE | none | — | This lemma belongs to the article. |
 | C39.c' | Tightness of `(B_ζ/ζ)H_{ζ·}` (5.9(ii)) makes `ω_H(δ) → 0` | ARTICLE-SIDE | none (BGW supplies analogues under `ζ = n` and `ζ ≥ n` only: `BGW.StableTrees.ExactContour.tendsto_exactHeightContourLaw`, `BGW.StableTrees.TailPair.tendsto_tailPairLaw`) | `BGW.StableTrees.ExactContourJoint`, `BGW.StableTrees.TailPair` | The leaf-conditioned tightness is the article's own functional layer (5.9). |
-| C39.app | Final application: specialization to the actual leaf-conditioned model of the paper (Intro GHP, N9) | ARTICLE-SIDE (downstream open obligation; roadmap CT9) | none | — | Roadmap CT9: "the final application in CT.C39 is a further full-scope obligation ... if completing the specialization needs the article's own functional layer, retain it as an explicit downstream open obligation". No BGW application to an available model was found either (optional per roadmap: "An application in BGW can discharge those hypotheses for an actual available model"). |
+| C39.app | Final application: specialization to the actual leaf-conditioned model of the paper (Intro GHP, N9) | ARTICLE-SIDE | none | — | The article supplies the leaf-conditioned contour limit and the leaf-index discrepancy for its model. |
 
 ## Remaining obligations
 
@@ -596,7 +594,7 @@ Uniform leaf measure versus uniform vertex measure.
 - **C36.N14.** BGW supplies the functional `maxJump` and `lipschitzWith_two_maxJump`. The article proves $\bar\Delta(W(\tau))=\Delta(\tau)-1$ (false for the one-vertex tree; $\lambda=n\ge2$).
 - **C39.c (`cor_Lambda`).** BGW takes the leaf-index discrepancy as hypothesis `hleaf` of `tendsto_rooted_leaf_laws_of_contour`. The article's Corollary 3.3 (`cor_Lambda`) supplies it; BGW cannot import it.
 - **C39.c' (leaf-conditioned height tightness).** BGW takes the contour convergence as hypothesis `hlim` (and tightness follows from it); it supplies the analogues under $\zeta=n$ and $\zeta\ge n$ (`tendsto_exactHeightContourLaw`, `tendsto_tailPairLaw`). The article proves the leaf-conditioned form of 5.9(ii).
-- **C39.app (final specialization).** BGW supplies the whole generic chain (`tendsto_rooted_laws_of_contour`, `tendsto_rooted_leaf_laws_of_contour`, `levyProkhorovDist_mass_leafMass_le`). The article checks the specialization to the actual leaf-conditioned model: `hb`, `hratio`, `hleaf`, `hlim`. No BGW application to an available model exists, and a different-model example would not complete the item (roadmap CT9).
+- **C39.app (final specialization).** BGW supplies the whole generic chain (`tendsto_rooted_laws_of_contour`, `tendsto_rooted_leaf_laws_of_contour`, `levyProkhorovDist_mass_leafMass_le`). The article checks the specialization to the actual leaf-conditioned model: `hb`, `hratio`, `hleaf`, `hlim`.
 
 **Bypassed rows** (not obligations; the reason is in each row): C27.g1, C27.g2, C28.f, C28.b, C29.f, C30.iii, C32.[D], C34.[D], C35.d, C39.g1.
 
@@ -721,30 +719,4 @@ For each article result of the usage map (§10 of the specification): the BGW mo
 
 **8.1(II).** Import: `import BGW.StableTrees.ForestTriple`, `import BGW.StableTrees.TailPair`, `import BGW.StableTrees.JointExcursion`.
   - same classical inputs as Introduction (II): `BGW.StableTrees.ForestTriple.tendsto_forestTripleLaw`, `BGW.StableTrees.TailPair.tendsto_tailPairLaw`, `BGW.StableTrees.gamma_identity`
-  - Article-side step: The discrete $A$-analogues of 5.2, 5.4, 5.6, 6.5, 6.10, 6.11 (partly proved in the article); lattice caveat Q10.
-
-## Labelling note
-
-The roadmap states that `CT.C1`–`CT.C39` denote the specification's C1–C39. In the delivered table of the report, however, five rows were written in the numbering of the contracts (`CT1_*`, `CT2_*`) and of Billingsley's chapters, so their label differs from the spec item. The correspondence found by the reconciliation of C1–C14:
-
-| Report label | Spec items covered |
-| --- | --- |
-| `CT.C1` (Billingsley Thms 2.7, 3.2, 3.9) | C9 (continuous mapping, countable frontiers), C10 (Slutsky with a constant limit) and C11 (approximation theorem 3.2); not spec C1 |
-| `CT.C2` (definitions) | C1 (the space $D$, time changes, $J_1$ metric, comparison, time-change characterization) |
-| `CT.C2` (Thms 12.1, 12.2) | C3 (metric $d^\circ$, completeness, Polishness) |
-| `CT.C2` (Thms 12.3, 13.2) | C8 (modulus $w'$, compactness and tightness criteria) |
-| `CT.C2, C4, C12(1), C12(3)` | C2, C4, C12 (the labels here are spec numbers) |
-| `CT.C14` and `CT.C5, C6 (part), C7, C36` | spec numbers (C14, C5, C6, C7, C36) |
-| `CT10 C5.4`, `CT10 C8`, `CT10 (C10a)` | spec C5.4, C8 (Aldous criterion and the necessity directions); these agree with the code |
-
-Other points found by the reconciliation: (i) the inventory column "Existing" of the specification, and its statement that C14 is not needed, are out of date (all of C1–C14 and the representation theorems are delivered); (ii) the delivered table of the report has no row for the C2 consequences (second countability, metrizability of `ProbabilityMeasure (D T ℝ)`, Borel product), which follow from `BGW.Skorokhod.instSeparableSpace` by Mathlib instances and have no BGW name; (iii) the report's Open paragraph on CT9 speaks of the law-level form of C39, now delivered (`tendsto_rooted_leaf_laws_of_contour`), while the final specialization stays article-side; (iv) the specification's Lean sketch names are not the delivered names:
-
-| Sketch name | Delivered declaration |
-| --- | --- |
-| `stableLaw_laplace` | `BGW.StableTrees.integral_exp_neg_mul_stableLaw` |
-| `pDens_conv` | `BGW.StableTrees.integral_stableDensityAt_mul` |
-| `fclt_stable` | `BGW.StableTrees.IsRealStableAttracted.tendsto_stepPathLaw` |
-| `stableProcessLaw_restrict` | `BGW.StableTrees.map_restrict_stableProcessLaw` |
-| `stableProcessLaw_isStableLevyLaw` | `BGW.StableTrees.isStableLevyLaw_stableProcessLaw` |
-| `stableBridgeLaw_prefix` | `BGW.StableTrees.map_restrict_stableBridgeLaw` and `BGW.StableTrees.integral_restrict_stableBridgeLaw` |
-| `CitedDLGTail`, `CitedDuquesne` | none (replaced by the proved theorems `tendsto_tailPairLaw`, `tendsto_exactHeightContourLaw`) |
+  - Article-side step: The discrete $A$-analogues of 5.2, 5.4, 5.6, 6.5, 6.10, 6.11 (partly proved in the article), with discrete densities restricted to the admissible residue class when the span exceeds one.

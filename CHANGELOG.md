@@ -1,31 +1,21 @@
 # Changelog
 
-The library is pre-release (`0.1.0`); names and module paths may change before `1.0`. This file
-records notable changes, and every renamed or moved public declaration.
+Names and module paths may change before `1.0`.
 
-## Unreleased
+## v0.1.1
 
-### Publication preparation
+- Public documentation now focuses on installation, mathematical statements and coverage,
+  examples, and verification.
+- Internal audits, roadmaps, draft contracts, and freeze records are kept in the development
+  checkout.
+- The Lean library and dependency pins match `v0.1.0`.
 
-- Document installation from a published commit in `random-trees-lean` and add citation metadata.
-- Update the verification checkpoint, the C27–C29 export notes and the public freeze index.
-- Allow 90 minutes for the main CI job to accommodate an uncached library build.
+## v0.1.0
 
-### 9 November 2026 — independent kernel replay
-
-- The compiled library passes `leanchecker` (all 870 modules), and its full export (416,202
-  declarations, with the Mathlib closure) is accepted by `leanchecker-paranoid`, `con-leche`, `con-ron`
-  and `lean4lean`; `nanoda` ran out of memory on this machine. The export declares `sorryAx` (Lean core)
-  but no declaration uses it. Details: [docs/evidence/KERNEL_REPLAY.md](docs/evidence/KERNEL_REPLAY.md).
-
-### 9 November 2026 — freeze records in format 4
-
-- All 104 active freeze records are now in format 4 (skills v2.0.0), which also freezes the Lake
-  configuration, the dependencies' sources and the compiled dependency files. Each of the 94 former
-  format-3 records was recorded again at its own commit (56), or, when it had been recorded from
-  uncommitted work, at the first later commit containing its modules (38); in every case the
-  declaration hashes are identical to the predecessor's, and the new record passes on the current
-  tree. The predecessors are kept unchanged and linked (see [docs/evidence/](docs/evidence/README.md)).
+First release of the full library, including the stable process and excursion theory,
+BGW scaling limits, and continuum-tree geometry. See the
+[release notes](https://github.com/igor-kortchemski/random-trees-lean/releases/tag/v0.1.0)
+and the [coverage index](CLASSICAL_THEORY_COVERAGE.md).
 
 ### 8 November 2026 — generic lemmas leave the `BGW.StableTrees` namespace (`a30839d`)
 
@@ -38,19 +28,16 @@ records notable changes, and every renamed or moved public declaration.
   The exact map is [docs/renames/2026-11-08-namespaces.tsv](docs/renames/2026-11-08-namespaces.tsv).
 - The article consumer (`arXiv-1110.2163v4-BGW-leaves`) was rebuilt in a scratch copy against this
   commit and builds unchanged: its import closure contains none of the changed modules.
-- Deferred: `BGW/ContinuumTrees/ExcursionCarrier.lean` keeps the namespace `BGW.StableTrees`. Its
-  carrier (`IsExcursionTag`, `Excursion`) is generic, with no stable-law parameter, but 31 freeze
-  records and many uses depend on it; its namespace and its folder will be reorganized later.
 
-### 8 November 2026 — unused hypotheses of frozen statements (approved by the maintainer)
+### Theorem hypotheses
 
-- Removed from theorems (frozen statements; each becomes stronger):
+- Removed unused hypotheses from theorems:
   `Skorokhod.tendsto_map_splitProdWithCont` (`[SeparableSpace E]`),
   `Skorokhod.CompatiblePaths.measure_ext` (`[IsFiniteMeasure Q']`),
   `Skorokhod.isTightMeasureSet_of_cadlagModulus` and `…_eventually` (`[OpensMeasurableSpace (D T E)]`),
   `StableTrees.tendsto_integral_abs_sub_of_massOne` and `tendsto_integral_mul_of_massOne`
   (`[IsProbabilityMeasure P]`), `Skorokhod.DLoc.measure_ext_of_restrict` (`[IsFiniteMeasure Q]`),
-  and, not frozen, `MetricMeasure.ghpDistance_self`, `rootedGHPDistance_self`,
+  and `MetricMeasure.ghpDistance_self`, `rootedGHPDistance_self`,
   `ghpDistance_eq_zero_of_measured_isometry`, `rootedGHPDistance_eq_zero_of_measured_isometry`
   (`[IsProbabilityMeasure μ]`).
 - Kept, with `@[nolint unusedArguments]` and a docstring explaining the domain they fix:
@@ -60,10 +47,8 @@ records notable changes, and every renamed or moved public declaration.
   `ghpDistance` and their lemmas is undone: with nonempty carriers, compactness keeps the Hausdorff
   term finite (Mathlib's real `hausdorffDist` is `0` when infinite), and the Borel assumptions make
   the embeddings measurable so that the pushforward measures are meaningful.
-- Freeze records whose statements changed received linked successor records (see
-  [docs/evidence/](docs/evidence/README.md)); the earlier records are kept unchanged.
 
-### 8 November 2026 — audit plan, phases 2 and 3 (non-breaking parts)
+### General normings and public API
 
 - **New theorems:** C27, C28 and C29 for any admissible norming sequence (module
   `BGW.StableTrees.NonmonotoneNorming`): `ForestTriple.tendsto_forestTripleLaw_of_attracted`,
@@ -83,28 +68,9 @@ records notable changes, and every renamed or moved public declaration.
   `Coding.forgetToGH`, `continuous_forgetToGH`, `tendsto_map_forgetToGH` to
   `BGW.MetricMeasure.RootedUnderlyingGH`; `maxJump_eq_zero_of_continuous` and
   `maxJump_eq_zero_iff_continuous_of_leftLim_le` to `BGW.Skorokhod.Jump`.
-- **Mathlib default linters:** from 47 findings to 6 (the remaining 6 are in frozen statements).
-  Unused instance arguments were removed from theorems (this only strengthens them), e.g.
-  `exists_joint_tendstoInMeasure_of_fiber_limits`, `Scalar.integral_conv_int` and four `Attraction`
-  lemmas; the GHP part of this clean-up was revised the same day (next entry). The simp lemmas
-  `Coding.circularProjection_zero/one`, `Coding.reroot_zero/one`, `Vervaat.rotate_zero/one` and
-  `Vervaat.vervaat_zero/one` are restated in simp normal form; `@[simp]` was removed from
-  `BrownianBridge.path_zero/one`, `FiniteTree.mass_singleton`, `PlaneTree.fringe?_node_cons` and three
-  `Marchal.graftGraph_*` lemmas. Local instances renamed `instMeasurableSpaceListNat`,
-  `instMeasurableSpaceListInt`; the unused binder of `bridgePrefix_family` is now `_hb` (same type).
-- **`set_option`:** from 46 uses to 5 (proof changes only).
 - **Tooling:** `scripts/lint_report.py`; a non-blocking CI job running Mathlib's standard linter set and
   `#lint`; `BGWTest/ApiExamples.lean` in the check; a doc-gen4 project in
   [docs/build/](docs/build/README.md).
-
-### 8 November 2026 — documentation and evidence
-
-- README, entry-point docstrings and the report header describe the current library; an
-  installation route, a maintenance section, this changelog and the statement evidence
-  ([docs/evidence/](docs/evidence/README.md)) were added.
-- New compiled consumer examples: the README tree snippets in `BGWTest/Examples.lean`, and
-  stable excursions and Donsker's theorem in `BGWTest/ScalingLimits.lean`.
-- [LEAN_LIBRARY_AUDIT.md](LEAN_LIBRARY_AUDIT.md): audit for reuse, Mathlib and Tau Ceti.
 
 ### 8 November 2026 — second cleanup (`87d240c`)
 

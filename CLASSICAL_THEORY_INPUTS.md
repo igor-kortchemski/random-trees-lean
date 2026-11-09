@@ -1,236 +1,18 @@
-# Classical theory inputs for arXiv:1110.2163v4 (tranche 2: functional limit theorems)
+# Classical theory inputs for random-tree scaling limits
 
-**Specification document, 5 November 2026.** Written for the project owner, who will formalize the classical
-probability theory once, in the general library `../BGW-formalization`. This project will then import it. The
-document lists every classical result the paper uses as a black box, with an exact statement, a source, the
-paper results that use it, the minimal form those results need, the dependencies, a Lean interface sketch and a
-size estimate. It does not modify any Lean file and authorizes nothing by itself.
+The items C1–C39 record the classical probability and geometry used in
+[*Invariance principles for Galton–Watson trees conditioned on the number of leaves*](https://arxiv.org/abs/1110.2163v4).
+See the [coverage index](CLASSICAL_THEORY_COVERAGE.md) for the actual Lean declarations,
+their hypotheses, and the remaining article-side obligations.
 
-**Reading guide.**
+The statement and source fields give the mathematical context. Proof sketches
+describe possible routes and the coverage index identifies the delivered results.
+Source tags distinguish statements read in the primary source, standard results,
+derivations, and numerical checks.
 
-* Items are numbered **C1 to C39**. These labels are stable and the project may cite them (for instance a cited
-  input `Prop` named `CitedC24`).
-* Each item has fields **(a)** statement, **(b)** source, **(c)** use in the paper, **(d)** minimal version,
-  **(e)** dependencies, **(f)** Lean sketch and **(g)** size and pitfalls.
-* Evidence tags, used throughout:
-  * **[read]**: the statement was read in the source text during this study (arXiv LaTeX sources of Kortchemski
-    `Kautre`, Duquesne 2003, Duquesne–Le Gall, Uribe Bravo 2014 and Rizzolo 2015; see Appendix B).
-  * **[std]**: standard result, recalled. The theorem number must be **checked against the book** before it goes into
-    a docstring.
-  * **[D]**: derived here (proof sketch given). It needs a Lean proof or an independent check.
-  * **[num]**: checked numerically in this study.
-* "Paper" means `largetrees_final.tex`, read in the UTF-8 copy. Line numbers refer to that copy. The numbering of
-  results is the printed one (4.1 Duquesne, 5.1 Duquesne–Le Gall, 5.3 `prop:Gamma`, 5.7 `lem:CVproba`, 5.8
-  `lem:absolue`, 5.9 `thm:cvG`, 5.10 `rem:changement`, 6.1 `thm:cvW3`, 6.2 `lem:CVf2`, 6.6 the continuous Vervaat
-  map, 6.7 `cor:vervaatC`, 6.9 `prop:bridge`, 7.1 `thm:max`, 8.1 `thm:general`).
-* Printed errors already recorded in `MANUSCRIPT_RECOMMENDATIONS.md` (R1–R13) are **not** propagated. In particular,
-  `B_n` always means a **correct** norming (Section 1.3), never the printed Theorem 1.10 formula (R2, R4). New findings
-  of this study are labelled **N1–N15** (Section 0.5). They are proposals for the erratum ledger; this document does
-  not edit that ledger.
+## Qualifications of the source statements (N1–N15)
 
----
-
-## 0. Executive summary
-
-### 0.1 Overview of the classical items
-
-Columns: **Need**: **P** = needed by the paper's own proofs (consumer layer); **L** = needed only to build the
-library (to construct the objects that the P items talk about); **O** = optional or avoidable. **Have**: what already
-exists (Mathlib v4.35 at rev 56a0058, BGW, this project). **Size**: lines of Lean, ±50%, calibrated on the
-survey `.orchestration/drafts/t2-survey.md` §9. **Diff.**: 1 (routine) to 5 (research-level formalization).
-
-| Label | Content | Need | Have | Size | Diff. |
-|---|---|---|---|---|---|
-| C1 | Skorokhod space `D([0,T],ℝ)`, J1 metric `d` | P | `IsCadlag`, `leftLim` (Mathlib) | 500–900 | 2 |
-| C2 | Separability of `D` | P | — | 300–600 | 2 |
-| C3 | Billingsley's metric `d°`, completeness, Polish | O | — | 1200–2200 | 3 |
-| C4 | Borel σ-field of `D` = cylinder σ-field; measurable evaluations | L (P-avoidable) | `C(X,Y)` analogue only | 600–1100 | 3 |
-| C5 | `C ⊂ D`; J1 to a continuous limit is uniform; `D×C` vs `D(ℝ²)` | P | — | 250–400 | 2 |
-| C6 | Continuity facts: evaluation, restriction, stopping, sup/inf, time–space scaling (core of 5.7) | P | — | 800–1500 | 3 |
-| C7 | Stopped-path approximation at a continuity endpoint | P | — | ~100 | 1 |
-| C8 | Relative compactness and tightness in `D` (`w'`, Billingsley 13.2, Aldous) | L | Prokhorov direction tight ⇒ compact (Mathlib) | 1500–2500 | 4 |
-| C9 | Continuous mapping theorem for a.e.-continuous maps | P | CMT for continuous maps | 100–250 | 1 |
-| C10 | Converging-together lemma; metric Slutsky on varying spaces | P | Thm 3.1: BGW `tendsto_probabilityMap_of_error_probability` | 100–200 | 1 |
-| C11 | Billingsley's approximation theorem 3.2; prefix + terminal control ⇒ full convergence | P | — | 150–300 | 2 |
-| C12 | Determining classes: f.d.d.; prefixes + continuity at `T`; countably many fixed jumps | P/L | — | 200–400 | 2 |
-| C13 | Prokhorov | L | Mathlib `isCompact_closure_of_isTightMeasureSet` | 0 | – |
-| C14 | Skorokhod representation | O (avoidable) | real quantile version in a sibling project | (not needed) | – |
-| C15 | Stable law `μ_θ`, density `p_1`, `p_t`, kernels `q_s`, `Γ_a` | P | most of it (BGW + project) | 300–800 | 2 |
-| C16 | The θ-stable spectrally positive Lévy process as a law on `D([0,T])` | P | Brownian case only (BGW) | 1500–3000 | 3 |
-| C17 | Functional limit theorem (FCLT) for walks in the stable domain | P | `maximal_tight`, `walkVecLaw_map_split`, `regularlyVaryingSeq` (BGW) | 1200–2500 | 4 |
-| C18 | Fluctuation basics: regularity of 0, first passage, Kendall's identity, unique minimum (Millar) | P (F6) / L | — | 2000–4000 | 4 |
-| C19 | θ = 2 instance: `X = √2 B` | P (pilot) | BGW Brownian motion, bridge, Vervaat | 300–800 | 2 |
-| C20 | Reflected process `X − I`, local time `−I` | L | — | in C21 | 5 |
-| C21 | Itô excursion theorem for `X − I`, excursion measure `N` | L | — | 4000–8000 (C20–C23) | 5 |
-| C22 | Itô description of `N`, normalized excursion `X^exc`, `N(·∣ζ>1)` | P (as objects) / L | — | in C21 | 4 |
-| C23 | Markov property under `N` | L | — | in C21 | 4 |
-| C24 | Proposition 5.3 (`Γ_a` identity) | P | `pDens`, `qKernel`, `sizeTailKernel` (project) | 500–1000 given C21–C23 | 3 |
-| C25 | Chaumont's path construction of `X^exc` | O | — | – | 4 |
-| C26 | Height process `H`, continuity, `H^exc` | P (as objects) / L | — | 5000–10000 | 5 |
-| C27 | Duquesne–Le Gall forest theorem (unconditioned joint `(W,H,C)`) | L | — | 4000–8000 on top of C26 | 5 |
-| C28 | Theorem 5.1 (trees with `ζ ≥ n`) | P | — | 800–1500 given C27 | 4 |
-| C29 | Theorem 4.1 (Duquesne, trees with `ζ = n`) | P | — | 1500–3000 via R-A | 4 |
-| C30 | θ = 2: `H^exc = X^exc = √2 e`; Aldous's normalization | P (4.6) | BGW `VervaatBridge.law` (by definition) | 300–800 + C35 for BM | 3 |
-| C31 | Stable bridge `X^br` on `D([0,1])` | P | Brownian bridge on `C` (BGW) | 1500–3000 | 4 |
-| C32 | Unique minimum of `X^br`, attained continuously | P | grid version for BM (BGW) | 800–1500 | 4 |
-| C33 | Càdlàg Vervaat map `V` (6.6), discrete correspondence (6.7) | P | continuous loops only (BGW) | 500–900 | 2 |
-| C34 | Continuity of `V` at bridge-like paths | P | — | 600–1000 | 3 |
-| C35 | `V(X^br) = X^exc` in law (Chaumont) | P, or derived (R-B) | — | 0 via R-B | 5 if direct |
-| C36 | Largest-jump functional `Δ̄`, 2-Lipschitz | P | — | 150–300 | 1 |
-| C37 | Real tree coded by `g ∈ C`; GH(P) Lipschitz | P | BGW `lipschitzWith_rootedMeasuredGHSpace` | 0 (+GH forgetful, ~50) | 1 |
-| C38 | Contour ⇒ rooted measured GHP transfer | P | BGW `tendsto_rooted_laws_of_contour` | 100–300 (conventions) | 2 |
-| C39 | Uniform leaf measure vs uniform vertex measure (Prokhorov) | P (Intro GHP) | `cor_Lambda` (project), BGW perturbation | 300–600 | 2 |
-
-**Totals (rough).**
-
-* Consumer layer: C1, C2, C5–C7, C9–C12, C33, C34, C36 and the conversions C38–C39. About **3.5–6.5k** lines. This
-  matches the survey's "staged route E4".
-* Stable process, FCLT, bridge and minimum: C8, C15–C18 (F2, F6), C31, C32. About **+8–15k**.
-* Excursion theory and height process: C20–C24, C26–C28. About **+15–30k**. This is the elephant.
-* C29 and C35 can be **derived** (R-A, R-B) instead of formalized as independent inputs.
-
-### 0.2 Dependency DAG
-
-**Items to items** (`X ← Y` means X uses Y):
-
-```
-C1  ← Mathlib IsCadlag, leftLim
-C2  ← C1                          C3 ← C1 (optional)
-C4  ← C1 (C2 helps)               C5 ← C1
-C6  ← C1, C5                      C7 ← C1
-C8  ← C1, C4 (C3 only for the converse direction)
-C9  ← Mathlib portmanteau (closed sets), IsGδ.setOfPred_continuousAt
-C10 ← BGW WeakPerturbation, C2 (second countability of products)
-C11 ← Mathlib portmanteau / Lévy–Prokhorov metric, C7
-C12 ← C4 (f.d.d. part), C7 + C9 (prefix part)
-C15 ← BGW Scalar.stableDensity/stableCF/DensityLaw, project witnesses (exists_stableDomain_of_Htheta)
-C16 ← C1, C4, C15; existence via C17 + C8 (route R-F) or via Kolmogorov extension + càdlàg modification
-C17 ← C1, C2, C4, C8, C12, C15, BGW maximal_tight, walkVecLaw_map_split, regularlyVaryingSeq
-C18 ← C16 (strong Markov), fluctuation theory
-C19 ← BGW brownian, BrownianBridge.law, VervaatBridge.law
-C20 ← C16, C18
-C21 ← C20 (Itô's theorem for a Markov process with a regular point)
-C22 ← C21, C16 (scaling)
-C23 ← C21, C16 (strong Markov)
-C24 ← C18 (Kendall F4), C22, C23, C26 (H|[0,a] is a functional of X|[0,a]), C4 or C12
-C26 ← C16, C18, C21 (H under N), C22 (H under N(·|ζ=1))
-C27 ← C17, C26, Duquesne–Le Gall ch. 1–2 (exploration process, f.d.d. and tightness)
-C28 ← C27, C21, C22, C26, C9 (excursion extraction)
-C29 ← C28, C24, C6, C9–C11, discrete facts already proved (route R-A)  |  or cited
-C30 ← C19, C22, C26, C35 (θ = 2)
-C31 ← C15, C16 (P5), construction (C8 + limit, or Markov-bridge construction)
-C32 ← C31, C18 (F2, F5, F6), C16
-C33 ← C1 (C4 for measurability, or a.e.-measurability via C9)
-C34 ← C1, C5, C6, C33
-C35 ← C31, C32, C22 (Chaumont)  |  or derived (route R-B) from 5.9(i) and 6.1
-C36 ← C1
-C37 ← BGW            C38 ← BGW, C5            C39 ← BGW, project cor_Lambda
-```
-
-**Items to paper results** (the direction of use is always "classical ⇒ paper"):
-
-```
-4.1  ← C29                                   (only consumer: 4.5, 4.6)
-4.2  ← C22, C26 (identification, definitional)
-4.5  ← 4.1 + Prop 4.4 (proved) + Mathlib portmanteau
-4.6  ← 4.5 + C30
-§5.1 ← C16, C18, C20–C23, C26 (all definitions of the limit objects)
-5.1  ← C28
-5.3  ← C24
-5.7  ← C2, C6(iv), C9, C10
-5.8  ← 5.1, 5.3, 5.7, C15 (Γ_a continuous), C9, C22 (E1, E2)
-5.9  ← 5.8, 5.7, C5, C7, C10, C11, C26 (H^exc continuous, vanishes at 0 and 1)
-5.10 ← 5.9 / 6.1, C10 (B_ζ/B_n → μ₀^{-1/θ}, proved discrete input)
-GH after 5.10 ← 5.9(ii), C37, C38
-6.2(ii) ← C17, C6(iv) (= 5.7)
-6.6, 6.7 ← C33
-6.9(i)  ← C31, C32, C34 (continuity) ; C35 or R-B (law identity)
-6.9(ii) ← C31
-6.1  ← 6.2(ii), 6.9, 5.7, C7, C9, C11, 6.7, 6.8 and 6.10–6.11 (proved)
-7.1(i) ← 6.1, 5.10, C36, Mathlib CMT
-Intro (II) ← 5.8, 5.9, 6.1, C6(iii), C9, C10, C11 (+ C5 for D(ℝ³))
-Intro GHP ← 5.9(ii), 5.10, C37, C38, C39, cor_Lambda (proved)
-8.1(II) ← same classical inputs as Intro (II); new discrete A-analogues (partly proved, lattice caveat, Q10)
-```
-
-Picture of the critical path:
-
-```
- C1 ─┬─ C2 ─ C10 ──────────────┐
-     ├─ C5 ─ C6 ─(5.7)─────────┼──► 5.8 ─► 5.9 ─► 5.10 ─► GH, Intro(II), 7.1(i)
-     ├─ C7 ─ C11 ──────────────┤          ▲
-     ├─ C33 ─ C34 ─────────────┼──► 6.1 ──┘
-     └─ C36                    │     ▲
- C15 ─ C16 ─ C17 (FCLT) ───────┼─────┤ 6.2(ii)
-        │      └─ C31 ─ C32 ───┘─────┘ 6.9
-        └─ C18 ─ C20 ─ C21 ─ C22 ─ C23 ─ C24 (5.3) ──► 5.8
-                         └─ C26 ─ C27 ─ C28 (5.1) ───► 5.8
-                                   C28 + C24 ─ R-A ──► C29 (4.1) ─► 4.5, 4.6
-```
-
-### 0.3 Recommended formalization order
-
-Each phase lists what it unlocks in this project. The unlock is **conditional** on the later phases, stated as
-named cited inputs (Option A, project `CLAUDE.md`).
-
-1. **Phase 1, deterministic path space** (C1, C5, C6, C7, C33, C34, C36; about 3–5k lines). This unlocks the
-   deterministic parts of 5.7, 6.6, 6.7 and 7.1(i), and the continuity half of 6.9(i), all without any probability.
-2. **Phase 2, weak-convergence add-ons** (C2, C9, C10, C11, C12 prefix part; C4 optional; about 1–2k lines). This
-   unlocks, conditionally on the limit laws, the full consumer layer: 4.5, 5.7, 5.8, 5.9, 5.10, 6.1, 7.1(i),
-   Intro (II) and Intro GHP (with C37–C39).
-3. **Phase 3, θ = 2 pilot** (C19, plus C30 partly; about 1k lines). Every limit object exists in BGW for θ = 2
-   (`X = √2·brownian`, `X^br = √2·BrownianBridge`, `X^exc = √2·VervaatBridge`). This gives a first unconditional
-   check of the interfaces of Phases 1–2: continuity of `V` at the Brownian bridge and the bridge prefix density.
-   6.1 at θ = 2 additionally needs the FCLT (C17; Donsker is not in BGW).
-4. **Phase 4, stable law and process** (C15 remainder, C8, C17, C16 through R-F; about 4–8k lines). This unlocks
-   6.2(ii), the existence of the reference law of 6.9(ii), and the FCLT.
-5. **Phase 5, bridge** (C18 F2/F5/F6, C31, C32; about 3–5k lines). This unlocks 6.9(i) continuity, 6.9(ii), and
-   6.1 with the limit `V(X^br)`.
-6. **Phase 6, excursion theory** (C20–C23, then C24 and C22's properties; about 5–10k lines). This unlocks 5.3,
-   the excursion laws `N(·|ζ>1)` and `N(·|ζ=1)` as genuine objects, and C35 through R-B.
-7. **Phase 7, height process and tree theorems** (C26, C27, C28; about 10–20k lines). This unlocks 5.1, then
-   4.1 through R-A. Until then, keep 5.1 and the existence and properties of `H` as named cited inputs.
-
-Phases 1–2 are worth doing first. They are general, independent of θ, and they turn every functional statement of
-the paper into a theorem conditional only on the existence and the stated properties of the limit laws.
-
-### 0.4 Reductions of the trust base (shortcuts the owner may take)
-
-* **R-A (4.1 is derivable).** Theorem 4.1 follows from {5.1, 5.3} and discrete facts already proved here.
-  This is Kortchemski's `Kautre` proof [read]: the same argument as Lemma 5.8 and Theorem 5.9 of the paper, with
-  `ζ = n` in place of `λ = n` and with the discrete density `(φ_{n−⌊an⌋}(j)/φ_n(1))/(φ*_{n−⌊an⌋}(j)/φ*_n(1)) →
-  Γ_a(j/B_n)`. That limit uses only Kemperman's formula with the uniform LLT (`n φ_n(k) − q_1(k/B_n) → 0`) and
-  Lemma 5.11 (`lem_technical2`, proved). So C29 is not an independent input once C24 and C28 exist.
-* **R-B (Chaumont's identity, 6.9(i), is derivable).** Suppose the project proves (1) Theorem 5.9(i) (prefix
-  convergence of the tree path to `X^exc|[0,a]`, through 5.1 and 5.3) and (2) Theorem 6.1 *with limit `V(X^br)`*
-  (through the bridge, without Chaumont). For all but countably many `a ∈ (0,1)` both give limits of
-  `r_a(tree path)`, so `law(X^exc|[0,a]) = law(V(X^br)|[0,a])` (C12(c)). Both laws are a.s. continuous at 1 with
-  value 0, so they are equal on `D([0,1])` (C12(b)). Hence C35 need not be formalized independently. [D]
-* **R-C (no tightness criterion for the paper's own proofs).** The paper's "usual tightness criterion (Billingsley
-  (13.8))" in the proof of 6.1, and the "easy exercise" of 5.9 (eq:cvC), both follow from C11b (Billingsley's
-  approximation theorem 3.2 plus stopped paths). This needs no compactness theory in `D`, provided the limit law
-  (`X^br`, `H^exc`) has been **constructed**. [D]
-* **R-D (no Skorokhod representation).** The proof of 5.7 uses Billingsley Thm 6.7. It is replaced by C10 (Slutsky)
-  and C9 (extended CMT) applied to the map of C6(iv). Duquesne–Le Gall also use representation in their Cor 2.5.1
-  and Prop 2.5.2; those uses can be replaced the same way. [D]
-* **R-E (no `D([0,∞))`).** Every use is on a compact horizon. 5.1 is needed only on `[0,1]` (only restrictions to
-  `[0,a]`, `a<1`, are used). The FCLT on `[0,1]` plus scaling (C16 P2) and regular variation of `B_n` gives every
-  horizon `T`. 5.7 is needed only for `D([0,T])` with `a < T`. [D]
-* **R-F (the stable process exists as a limit).** Tightness of the walk paths (C8 + BGW `maximal_tight`) and
-  identification of f.d.d. (C12(a)) produce `P^X_T` as the FCLT limit of any walk in the domain of attraction. The
-  project already has witnesses for every θ (`exists_stableDomain_of_Htheta`). This avoids a separate construction
-  through Lévy–Itô and a càdlàg modification theorem.
-* **R-G (alternative trust base for §5).** Instead of {5.1, 5.3} one may take {4.1 in its joint `(W,H)` form, the
-  Itô description C22(E4)}. Then 5.1 follows by mixing over the size (as in Prop 4.4(i), with rescaling) and 5.3
-  follows from the discrete absolute continuity and the LLT, as in the proof of Lemma 5.8 read backwards. [D] Not
-  recommended: the joint `(W,H)` form of 4.1 is itself not in Duquesne's Theorem 3.1 (N3).
-* **R-H (definitions over constructions, staged).** Until Phase 6 exists, `N(·|ζ=1)` and `N(·|ζ>1)` can be
-  **defined** by the Itô description C22(E4) from a law `P^exc` of `(X^exc, H^exc)` supplied as data, with named
-  `Prop`s for the facts used (C22 E1–E4, C24, C26). This is the survey's E4 encoding.
-
-### 0.5 New findings of this study (proposed erratum items N1–N15)
-
-These are proposals for `MANUSCRIPT_RECOMMENDATIONS.md`. Evidence is given with each.
+These notes explain qualifications and normalizations used in the coverage index.
 
 * **N1 (Theorem 5.1 is not a theorem of Duquesne–Le Gall).** The cited "concluding remark of DLG §2.5" [read,
   arXiv math/0509558] says that "the rescaled height (or contour) process of the μ_p-GW tree conditioned to have at
@@ -508,7 +290,7 @@ the two.
 * C38 (time conventions of the contour) and C30.
 * Intro (II) if stated in `D([0,1],ℝ³)`.
 
-**(d)** Items 1–3. Item 4 only if the owner wants the `ℝ³` formulation.
+**(d)** Items 1–3. Item 4 gives the `ℝ³` formulation.
 
 **(e)** C1.
 
@@ -879,7 +661,7 @@ theorem fclt_stable {ν : Measure ℤ} [IsProbabilityMeasure ν] {B : ℕ → �
   Tendsto (fun n => (Measure.infinitePi (fun _ : ℕ => ν)).map (stepPath T n (B n))) atTop (𝓝 (stableProcessLaw θ T))
 ```
 
-**(g)** 1200–2500 lines. Pitfall: tightness in J1 is not implied by tightness of the maximum (survey/roadmap); one
+**(g)** 1200–2500 lines. Pitfall: tightness in J1 is not implied by tightness of the maximum; one
 needs a modulus or Aldous's criterion.
 
 ### C18. Fluctuation basics for X (spectrally positive, θ ∈ (1,2])
@@ -906,7 +688,7 @@ needs a modulus or Aldous's criterion.
 * F2, F5, F6: C32 (unique minimum of the bridge), hence 6.9(i).
 * F1–F3: Part F.
 
-**(d)** For the bridge (Phase 5): F2, F5, F6. For 5.3: F4. The rest is for Part F.
+**(d)** For the bridge: F2, F5, F6. For 5.3: F4. The rest is for Part F.
 
 **(e)** C16 (strong Markov property), C15.
 
@@ -928,7 +710,7 @@ distinction between hitting and first passage (equal here because X creeps down)
 **(b)** BGW `BrownianMotion/Gaussian/BrownianMotion.lean`, `ContinuumTrees/{BrownianBridge,VervaatBridge}.lean`
 [survey, read in part]; Vervaat 1979, *Ann. Probab.* 7 [std].
 
-**(c)** Pilot instance (Phase 3); Remark 4.6 (C30).
+**(c)** Remark 4.6 (C30).
 
 **(d)** The objects and the bridge prefix density.
 
@@ -1018,7 +800,7 @@ theorem excLaw_endpoints, excLaw_pos, excLaw_noFixedJump                        
 ```
 
 **(g)** Part of 4000–8000. Pitfall: the paper's `N(·|ζ=1)` is **not** an elementary conditioning (`{ζ = 1}` is
-N-null). It must be the scaling definition (roadmap block E).
+N-null). It must be the scaling definition.
 
 ### C23. Markov property under N
 
@@ -1229,7 +1011,7 @@ Characterizations of e that the library may use:
 Theorem 1.15 [std; check]; Duquesne 2003, remark after Theorem 3.1 ("If the offspring distribution has a finite
 variance, then α = 2, H^exc is proportional to the normalized Brownian excursion") [read]; Vervaat 1979 [std].
 
-**(c)** Remark 4.6; the θ = 2 pilot (Phase 3).
+**(c)** Remark 4.6 and the θ = 2 case.
 
 **(d)** `H^exc = √2·e` with e defined as in (ii), plus the identification (i) = (ii) if one wants §5.1's literal
 definition.
@@ -1413,7 +1195,7 @@ arXiv:1405.1335).
 **(c)** Prop. 6.9(i) (second half), hence 6.1 (identification of the limit), 7.1(i) and Intro (II).
 
 **(d)** **Avoidable via R-B** (§0.4). Prove 6.1 with limit `V(X^br)`; then, given 5.9(i), the identity follows from
-C12(b, c). If the owner prefers to define `X^exc := V(X^br)` (as BGW does for θ = 2), then R-B shows that this
+C12(b, c). If one defines `X^exc := V(X^br)` (as BGW does for θ = 2), then R-B shows that this
 definition agrees with §5.1, given C24 and C28.
 
 **(e)** Direct proof: C22, C31, C32 (excursion theory). Via R-B: C12, 5.9(i), 6.1.
@@ -1590,121 +1372,11 @@ Each entry gives the corrected statement where needed, then the classical items 
 * **Introduction, GHP**: C38 (vertex measure) and C39 (leaf measure), with 5.9(ii) and 5.10. The measure must be
   specified (N9).
 * **8.1(II)**: the same classical inputs as Introduction (II), with ζ_A in place of λ. The discrete A-analogues of
-  5.2, 5.4, 5.6, 6.5, 6.10, 6.11 are partly proved (`eq_gen_corrected`, M10). Lattice caveat: Q10.
+  5.2, 5.4, 5.6, 6.5, 6.10, 6.11 are partly proved (`eq_gen_corrected`, M10). When the span exceeds one, the discrete densities must be restricted to the admissible residue class.
 
 ---
 
-## 11. Final tables
-
-### 11.1 What this project will import (once the library provides it)
-
-| Label | Expected library declaration (sketch) | Consumed by |
-|---|---|---|
-| C1, C2, C5, C6, C7 | `Skorokhod.D`, metric/Borel/separable instances, `restrict`, `extendConst`, `timeSpaceScale`, `ofContinuous`, `continuousAt_*` | everything functional |
-| C9, C10, C11, C12 | `tendsto_map_of_ae_continuousAt`, metric Slutsky, `tendsto_of_restrict_of_terminal`, `eq_of_restrict` | 5.7–5.10, 6.1, 7.1(i), Intro (II) |
-| C15 | `stableLaw`, `pDens_conv`, `gammaA`, `continuousOn_gammaA` | 5.3, 5.8, 6.9 |
-| C16, C17 | `stableProcessLaw`, `fclt_stable` | 6.2(ii), 6.9(ii) |
-| C31, C32 | `stableBridgeLaw`, `stableBridgeLaw_prefix`, `stableBridgeLaw_endpoint`, `ae_unique_argmin_bridge` | 6.9, 6.1 |
-| C33, C34 | `vervaatD`, `vervaatD_stepPath`, `continuousAt_vervaatD` | 6.6, 6.7, 6.9(i), 6.1 |
-| C36 | `maxJump`, `lipschitzWith_two_maxJump` | 7.1(i) |
-| C22, C26 | `excLaw θ`, `tailExcLaw θ`, E1–E4, H2–H5 | 4.1, 5.1, 5.3, 5.8–5.9, 6.1, Intro |
-| C24, C28 | `gamma_identity`, `dlg_tail` | 5.3, 5.1 |
-| C37, C38 | BGW (exists) | GH, GHP claims |
-
-### 11.2 What may stay a named cited input (`Prop`, Option A) if the owner decides not to formalize it
-
-| Cited input | Content | Consequence for the report |
-|---|---|---|
-| `CitedExcursionLaws θ` | existence of `excLaw θ` with C22 E1–E2 and C26 H2–H5 (or `excLaw` supplied as data, R-H) | 4.1–6.1 conditional |
-| `CitedGamma θ` | C24 (5.3) for `excLaw`/`tailExcLaw` | 5.8, 5.9 conditional |
-| `CitedDLGTail θ` | C28 (5.1) | 5.8, 5.9 conditional |
-| `CitedDuquesne θ` | C29 (4.1); unnecessary once C24 and C28 are available (R-A) | 4.5, 4.6 conditional |
-| `CitedChaumont θ` | C35; unnecessary via R-B | 6.1 identification |
-| `CitedBridge θ` | C31 + C32 (if Phase 5 is postponed) | 6.9, 6.1 conditional |
-| `CitedFCLT θ` | C17 (if Phase 4 is postponed) | 6.2(ii), 6.1 conditional |
-
-Each cited input is a statement about the classical objects only (laws on `D`, `C`, ℝ), **never** about trees or the
-paper's targets. This complies with Option A: no hypothesis equals a target.
-
-### 11.3 Open questions for the owner
-
-* **Q1 (path-space encoding).** A generic `D T E` over `Set.Icc 0 T` (recommended), or only `D01` with rescaled
-  restrictions `f ↦ f(a·)`? The second is lighter, but then every statement "in `D([0,a])`" becomes a statement about
-  a rescaled path.
-* **Q2 (joint statements).** Products `D × C × C` (recommended; JS VI.2.2 optional), or `D(ℝ³)`?
-* **Q3 (trust base).** Formalize Part F/H (C20–C28, 15–30k lines), or keep {`CitedExcursionLaws`, `CitedGamma`,
-  `CitedDLGTail`} and derive everything else, including 4.1 (R-A) and Chaumont (R-B)?
-* **Q4 (definition of `X^exc`).**
-  * Via N, as in §5.1 (faithful);
-  * via `V(X^br)` (BGW style; then R-B proves agreement, given C24 and C28);
-  * via Chaumont's straddling excursion (C25).
-* **Q5 (bridge construction).** Direct Markov-bridge construction (FPY, Chaumont–Uribe Bravo), or as a limit of
-  random-walk bridges (needs C8, shared with C17)?
-* **Q6 (FCLT proof route).** Aldous's criterion (C8) with BGW `maximal_tight`, or Billingsley 13.2 with a truncation
-  argument?
-* **Q7 (Polishness, C3).** Is it wanted in the library? The paper does not need it.
-* **Q8 (GHP claim).** Formalize the leaf-measure version (C39; Rizzolo's setting) or only the vertex-measure version?
-  The printed sentence does not specify (N9).
-* **Q9 (θ = 2 pilot).** Do Phase 3 first, as an unconditional end-to-end check of the interfaces with BGW's Brownian
-  objects?
-* **Q10 (8.1(II) and lattices).** Under `ζ_A = n` with `e = arithFactor μ A > 1` (R1), the discrete densities of the
-  5.2 and 6.10 analogues vanish off a residue class. The classical inputs are unchanged, but the averaging argument
-  of 5.8 and 6.1 needs a lattice version (density `e·Γ_a` on the admissible class). The paper's §5 avoids this with
-  its non-lattice standing assumption; 8.1(II) claims all attainable n. This must be settled at the paper level before
-  freezing 8.1(II).
-* **Q11 (normalization of N).** Fix `N(ζ > t) = t^{−1/θ}/Γ(1−1/θ)` (local time `−I`). The paper is insensitive to
-  this choice, but docstrings should state it.
-* **Q12 (erratum).** Should N1–N15 be added to `MANUSCRIPT_RECOMMENDATIONS.md`? This document does not edit it.
-
----
-
-## Appendix A. Consolidated Lean interface sketch (not compiled)
-
-```lean
-namespace BGW.Skorokhod
--- C1–C7
-structure D (T : ℝ) (E : Type*) [TopologicalSpace E] where
-  toFun : Set.Icc (0:ℝ) T → E
-  isCadlag : IsCadlag toFun
-instance : MetricSpace (D T ℝ); instance : MeasurableSpace (D T ℝ) := borel _; instance : BorelSpace (D T ℝ)
-instance : SeparableSpace (D T ℝ)
-def ofContinuous : C(Set.Icc (0:ℝ) T, ℝ) → D T ℝ
-def restrict (a) (h : a ≤ T) : D T ℝ → D a ℝ
-def extendConst (a) (h : a ≤ T) : D a ℝ → D T ℝ
-def timeSpaceScale (a T : ℝ) : D T ℝ × ℝ × ℝ → D a ℝ
-def evalEnd : D T ℝ → ℝ
-def maxJump : D T ℝ → ℝ
-def vervaatD : D 1 ℝ → D 1 ℝ
-end BGW.Skorokhod
-
-namespace BGW.WeakConvergence
--- C9–C12 (statements as in §3)
-end BGW.WeakConvergence
-
-namespace BGW.StableProcess
--- C15–C18, C31–C32
-def stableLaw (θ : ℝ) : ProbabilityMeasure ℝ
-def stableProcessLaw (θ T : ℝ) : ProbabilityMeasure (Skorokhod.D T ℝ)
-def stableBridgeLaw (θ : ℝ) : ProbabilityMeasure (Skorokhod.D 1 ℝ)
-theorem fclt_stable … ; theorem stableBridgeLaw_prefix … ; theorem ae_continuousAt_vervaatD_bridge …
-end BGW.StableProcess
-
-namespace BGW.StableExcursion
--- C20–C26
-def excLaw (θ : ℝ) : ProbabilityMeasure (Skorokhod.D 1 ℝ × C(unitInterval, ℝ))
-def tailExcLaw (θ : ℝ) : ProbabilityMeasure (Skorokhod.D 1 ℝ × C(unitInterval, ℝ))
-theorem gamma_identity … ; theorem tailExcLaw_eq_mixture …
-end BGW.StableExcursion
-
-namespace BGW.StableTrees.Invariance
--- C27–C29: dlg_forest, dlg_tail, duquesne
-end BGW.StableTrees.Invariance
-```
-
-Measurability of tree-to-path maps follows BGW's `tendsto_rooted_laws_of_contour` pattern (varying `Ω n`, explicit
-measurability hypotheses). The conditioned tree laws are countably supported, so a.e.-measurability is free (C4(d)).
-
-## Appendix B. Sources consulted in this study
+## Sources
 
 | Source | How | What was checked |
 |---|---|---|
@@ -1715,9 +1387,3 @@ measurability hypotheses). The conditioned tree laws are countably supported, so
 | Rizzolo, Ann. IHP 51 (2015) (arXiv:1105.2528) | LaTeX source read | Theorem 1.1: rooted GHP, uniform measure on A-vertices, finite variance |
 | Mathlib (pinned) | grep | `TendstoInDistribution.prodMk_of_tendstoInMeasure_const` hypotheses; `isCompact_closure_of_isTightMeasureSet`; `IsTightMeasureSet.prodMk`; `IsGδ.setOfPred_continuousAt` |
 | BGW | grep and reading | `StableDomain`, `stableDensity`, `stableDensity_zero`, `lipschitzWith_stableDensity`, `regularlyVaryingSeq`, `maximal_tight`, `tendsto_probabilityMap_of_error_probability`, `tendsto_rooted_laws_of_contour`, `lipschitzWith_rootedMeasuredGHSpace`, `BrownianBridge.law`, `VervaatBridge.law` |
-| Numerical check (pure Python, `scratchpad/num/check.py`) | computed | `p_1(0) = 1/(θΓ(1−1/θ))` and `P(X_1 < 0) = 1/θ` at θ = 1.2, 1.5, 1.8, 2 (6 digits); `E e^{−X_1} = e` at θ = 1.5 (sign convention of `stableCF`) |
-
-Not available as text in this environment (no PDF tools) and therefore marked [std]: Billingsley 1999, Jacod–Shiryaev
-2003, Bertoin 1996, Kallenberg FMP, Whitt 2002, Chaumont 1997, Le Gall 2005/2010, Aldous 1993, Zolotarev 1986,
-Millar 1977, Fitzsimmons–Pitman–Yor 1993, Chaumont–Uribe Bravo 2011, Liggett 1968. Their **theorem numbers must be
-checked** before they enter Lean docstrings; the mathematical statements above do not depend on the numbering.
