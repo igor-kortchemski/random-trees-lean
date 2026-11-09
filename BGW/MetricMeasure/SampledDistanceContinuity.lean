@@ -203,3 +203,4 @@ theorem measurable_sampledDistanceLaw (k : ℕ) :
 
 end MeasuredGHSpace
 end BGW.MetricMeasure
+

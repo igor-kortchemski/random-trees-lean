@@ -52,12 +52,23 @@ end GHPCoupling
 variable {X Y : Type u} [MetricSpace X] [MeasurableSpace X]
   [MetricSpace Y] [MeasurableSpace Y]
 
-/-- Costs of common ambient isometric realizations, including the distance between roots. -/
+/-- Costs of common ambient isometric realizations, including the distance between roots.
+
+The compactness and Borel assumptions are not used by the formula; they fix its domain.
+Compactness of both carriers, together with their nonemptiness (automatic for the carriers of
+probability measures, as in `RootedCompactMeasuredSpace`), makes the Hausdorff distance between the
+embedded carriers finite. Compactness alone does not exclude an empty carrier facing a nonempty
+one, in which case Mathlib's real `hausdorffDist` takes its default value `0`. The Borel
+assumptions make the isometric embeddings measurable, so that the pushforward measures in the
+Lévy–Prokhorov term are meaningful (`Measure.map` of a non-measurable map is `0`); they play no
+role in the finiteness of the Hausdorff term. -/
+@[nolint unusedArguments]
 def rootedGHPCosts [CompactSpace X] [BorelSpace X] [CompactSpace Y] [BorelSpace Y]
     (μ : Measure X) (ν : Measure Y) (x : X) (y : Y) : Set ℝ :=
   {r | ∃ C : GHPCoupling X Y, r = C.rootedCost μ ν x y}
 
-/-- The rooted GHP infimum on represented compact measured spaces. -/
+/-- The rooted GHP infimum on represented compact measured spaces. Its compactness and Borel
+assumptions fix the domain, as explained for `rootedGHPCosts`. -/
 noncomputable def rootedGHPDistance
     [CompactSpace X] [BorelSpace X] [CompactSpace Y] [BorelSpace Y]
     (μ : Measure X) (ν : Measure Y) (x : X) (y : Y) : ℝ :=

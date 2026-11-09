@@ -38,3 +38,4 @@ def RegularlyVaryingSeq (ρ : ℝ) (a : ℕ → ℝ) : Prop :=
   ∀ c : ℝ, 0 < c → Tendsto (fun n : ℕ => a ⌊c * n⌋₊ / a n) atTop (𝓝 (c ^ ρ))
 
 end BGW.StableTrees
+

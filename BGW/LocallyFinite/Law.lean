@@ -28,7 +28,12 @@ namespace BGW.LocallyFinite
 
 open MeasureTheory
 
-/-- Independent potential offspring counts, one for each address. -/
+/-- Independent potential offspring counts, one for each address.
+
+The probability hypothesis is not used by the formula, but it fixes the domain of the definition:
+`Measure.infinitePi` is the zero measure unless every component is a probability measure, so
+without it the definition would expose that default value instead of an offspring law. -/
+@[nolint unusedArguments]
 noncomputable def offspringFieldLaw (μ : Measure ℕ) [IsProbabilityMeasure μ] :
     Measure Offspring :=
   Measure.infinitePi (fun _ : Address => μ)

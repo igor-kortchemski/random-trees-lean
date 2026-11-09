@@ -110,7 +110,7 @@ theorem ghpDistance_triangle (μ : Measure X) (ν : Measure Y) (κ : Measure Z)
 
 omit [Nonempty X] in
 /-- A compact probability space has zero GHP distance from itself. -/
-theorem ghpDistance_self (μ : Measure X) [IsProbabilityMeasure μ] : ghpDistance μ μ = 0 := by
+theorem ghpDistance_self (μ : Measure X) : ghpDistance μ μ = 0 := by
   apply le_antisymm _ (ghpDistance_nonneg μ μ)
   have h := ghpDistance_le_of_isometries μ μ X id id isometry_id isometry_id
   have hb : borel X = ‹MeasurableSpace X› := BorelSpace.measurable_eq.symm

@@ -503,3 +503,4 @@ theorem tendsto_div_floor_rpow (hrv : RegularlyVaryingSeq ρ a) (hmono : Monoton
 end RegularlyVaryingSeq
 
 end BGW.StableTrees
+

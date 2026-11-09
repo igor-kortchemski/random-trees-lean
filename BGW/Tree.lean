@@ -139,7 +139,7 @@ def IsLeaf (t : PlaneTree) (u : List ℕ) : Prop := t.fringe? u = some leaf
 @[simp] theorem fringe?_cons (t : PlaneTree) (i : ℕ) (u : List ℕ) :
     t.fringe? (i :: u) = t.children[i]?.bind (fun s => s.fringe? u) := rfl
 
-@[simp] theorem fringe?_node_cons (ts : List PlaneTree) (i : ℕ) (u : List ℕ) :
+theorem fringe?_node_cons (ts : List PlaneTree) (i : ℕ) (u : List ℕ) :
     (node ts).fringe? (i :: u) = ts[i]?.bind (fun s => s.fringe? u) := by simp
 
 end PlaneTree

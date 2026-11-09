@@ -526,3 +526,4 @@ theorem ApproxMidpoints.of_isometryEquiv (e : X ≃ᵢ Y) {ε : ℝ} (h : Approx
 end Invariance
 
 end BGW.ContinuumTrees.RealTree
+

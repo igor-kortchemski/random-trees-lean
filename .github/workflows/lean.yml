@@ -16,7 +16,7 @@ jobs:
   build:
     name: Build Lean library
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - name: Check out sources
         uses: actions/checkout@v7
@@ -30,3 +30,29 @@ jobs:
           use-mathlib-cache: "true"
       - name: Check all sources, public examples, axioms and documentation
         run: python3 scripts/check.py
+
+  lint-report:
+    name: Mathlib linter report (non-blocking)
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    continue-on-error: true
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up Lean and fetch Mathlib cache
+        uses: leanprover/lean-action@v1
+        with:
+          auto-config: "false"
+          build: "false"
+          use-mathlib-cache: "true"
+      - name: Build with Mathlib's standard linter set, warnings reported but not fatal
+        run: |
+          # Only in this disposable checkout: enable the standard set and keep going on warnings.
+          sed -i 's/^warningAsError = true$/warningAsError = false\nweak.linter.mathlibStandardSet = true/' lakefile.toml
+          lake build BGW 2>&1 | tee build-lint.log
+          echo "Linter warnings: $(grep -c 'warning:' build-lint.log || true)"
+      - name: Report environment linters
+        run: python3 scripts/lint_report.py
+

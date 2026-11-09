@@ -350,3 +350,4 @@ theorem localLimit_of_support (h : StableDomain μ α a) {j : ℕ} (hj : μ j �
   · exact walkProb_eq_zero_of_not_dvd h (fun h' => hk ((dvd_sub_mul_iff h hj n k).2 h'))
 
 end BGW.StableTrees.Scalar
+

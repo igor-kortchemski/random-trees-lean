@@ -301,3 +301,4 @@ theorem integral_stableDensity (h : StableDomain μ α a) : ∫ x, stableDensity
     (continuous_stableDensity h.alpha_mem).aestronglyMeasurable, h2, ENNReal.toReal_one]
 
 end BGW.StableTrees.Scalar
+

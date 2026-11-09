@@ -39,7 +39,17 @@ variable {X Y : Type u} [MetricSpace X] [MeasurableSpace X]
   [MetricSpace Y] [MeasurableSpace Y]
 
 /-- The costs of all common ambient realizations in the same universe, with
-their Borel measurable structures and isometric embeddings of the whole carriers. -/
+their Borel measurable structures and isometric embeddings of the whole carriers.
+
+The compactness and Borel assumptions are not used by the formula; they fix its domain.
+Compactness of both carriers, together with their nonemptiness (automatic for the carriers of
+probability measures, as in `CompactMeasuredSpace`), makes the Hausdorff distance between the
+embedded carriers finite. Compactness alone does not exclude an empty carrier facing a nonempty
+one, in which case Mathlib's real `hausdorffDist` takes its default value `0`. The Borel
+assumptions make the isometric embeddings measurable, so that the pushforward measures in the
+Lévy–Prokhorov term are meaningful (`Measure.map` of a non-measurable map is `0`); they play no
+role in the finiteness of the Hausdorff term. -/
+@[nolint unusedArguments]
 def ghpCosts [CompactSpace X] [BorelSpace X] [CompactSpace Y] [BorelSpace Y]
     (μ : Measure X) (ν : Measure Y) : Set ℝ :=
   {r | ∃ Z : Type u, ∃ m : MetricSpace Z,
@@ -50,7 +60,8 @@ def ghpCosts [CompactSpace X] [BorelSpace X] [CompactSpace Y] [BorelSpace Y]
       r = levyProkhorovDist (μ.map i) (ν.map j) + hausdorffDist (range i) (range j)}
 
 /-- The GHP infimum on represented compact measured spaces, before passage to
-measure-preserving isometry classes. -/
+measure-preserving isometry classes. Its compactness and Borel assumptions fix the domain, as
+explained for `ghpCosts`: they are what makes the costs meaningful, for nonempty carriers. -/
 noncomputable def ghpDistance [CompactSpace X] [BorelSpace X] [CompactSpace Y] [BorelSpace Y]
     (μ : Measure X) (ν : Measure Y) : ℝ := sInf (ghpCosts μ ν)
 

@@ -132,3 +132,4 @@ theorem exists_finite_ghp_approximation [Nonempty X] [CompactSpace X]
     ghpDistance_finite_projection_le μ s q hq hε.le (fun x ↦ (hclose x).le)⟩
 
 end BGW.MetricMeasure
+

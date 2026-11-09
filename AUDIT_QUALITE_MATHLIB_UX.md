@@ -1,10 +1,5 @@
 # Audit de qualité — bibliothèque Random Trees
 
-> Publication snapshot for `igor-kortchemski/random-trees-lean`.
-> Historical local paths, uncommitted-state descriptions and temporary log references
-> below document the development before this initial export. They are not dependencies
-> of the published library. Reproduce current checks with `python3 scripts/check.py`.
-
 > **Mise à jour après mise en œuvre — 2 novembre 2026.** Les sections 1 à 8 conservent
 > le constat initial. Les corrections ont depuis été appliquées et vérifiées : voir la
 > section 9 et le [rapport de formalisation](FORMALIZATION_REPORT.md).

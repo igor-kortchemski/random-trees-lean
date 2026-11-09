@@ -249,3 +249,4 @@ theorem exists_norm_stepCF_le_of_le_abs (hc : IsCritical μ) (hne : μ 1 ≠ 1) 
     exact hmax ⟨h1, h2⟩
 
 end BGW.StableTrees.Scalar
+

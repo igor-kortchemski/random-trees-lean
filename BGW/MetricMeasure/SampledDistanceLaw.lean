@@ -104,3 +104,4 @@ noncomputable def sampledDistanceLaw (k : ℕ) :
 
 end MeasuredGHSpace
 end BGW.MetricMeasure
+

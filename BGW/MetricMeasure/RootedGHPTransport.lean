@@ -73,7 +73,7 @@ theorem rootedGHPDistance_map_isometryEquiv_right (ν : Measure Y) (μ : Measure
 
 /-- A measured isometry preserving the root gives zero rooted distance. -/
 theorem rootedGHPDistance_eq_zero_of_measured_isometry (μ : Measure X) (ν : Measure Y)
-    [IsProbabilityMeasure μ] (x : X) (y : Y) (e : X ≃ᵢ Y)
+    (x : X) (y : Y) (e : X ≃ᵢ Y)
     (hμ : μ.map e = ν) (hroot : e x = y) :
     rootedGHPDistance μ ν x y = 0 := by
   rw [← hμ, ← hroot, rootedGHPDistance_map_isometryEquiv_right, rootedGHPDistance_self]

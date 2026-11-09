@@ -59,11 +59,11 @@ noncomputable def path (ω : ℝ≥0 → ℝ) : C(unitInterval, ℝ) where
     path ω t = brownian (time t) ω - brownian 0 ω -
       (t : ℝ) * (brownian 1 ω - brownian 0 ω) := rfl
 
-@[simp] theorem path_zero (ω : ℝ≥0 → ℝ) : path ω 0 = 0 := by
+theorem path_zero (ω : ℝ≥0 → ℝ) : path ω 0 = 0 := by
   rw [path_apply, time_zero]
   simp only [Set.Icc.coe_zero, zero_mul, sub_self]
 
-@[simp] theorem path_one (ω : ℝ≥0 → ℝ) : path ω 1 = 0 := by
+theorem path_one (ω : ℝ≥0 → ℝ) : path ω 1 = 0 := by
   rw [path_apply, time_one]
   simp only [Set.Icc.coe_one, one_mul, sub_self]
 

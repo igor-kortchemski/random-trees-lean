@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this library, please cite it and specify the commit or release."
+type: software
+title: "Random Trees in Lean"
+authors:
+  - family-names: Kortchemski
+    given-names: Igor
+version: "0.1.0"
+license: Apache-2.0
+repository-code: "https://github.com/igor-kortchemski/random-trees-lean"

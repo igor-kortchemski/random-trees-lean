@@ -450,3 +450,4 @@ theorem inStableDomain_of_finiteVariance (hc : IsCritical μ) (hne : μ 1 ≠ 1)
   ⟨2, _, stableDomain_of_finiteVariance hc hne hfinite⟩
 
 end BGW.StableTrees.Scalar
+

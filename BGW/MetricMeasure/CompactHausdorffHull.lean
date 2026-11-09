@@ -62,3 +62,4 @@ theorem exists_common_compact_of_cauchySeq [CompleteSpace Z]
   exact ⟨L, K, hL, subset_compactSequenceHull_limit S L, subset_compactSequenceHull S L⟩
 
 end BGW.MetricMeasure
+

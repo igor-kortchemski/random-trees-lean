@@ -96,3 +96,4 @@ theorem ghpDistance_le_of_sigma_finiteMeasuredCode_eq
   exact ghpDistance_le_of_finiteMeasuredCode_eq μ ν e f hε (eq_of_heq hc)
 
 end BGW.MetricMeasure
+

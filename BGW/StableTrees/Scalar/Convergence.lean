@@ -171,3 +171,4 @@ theorem tendsto_norm_stepCF_pow (h : StableDomain μ α a) {ψ : ℕ → ℕ}
   simpa [Function.comp_def, norm_pow] using this
 
 end BGW.StableTrees.Scalar
+

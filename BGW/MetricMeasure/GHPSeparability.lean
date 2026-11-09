@@ -84,3 +84,4 @@ noncomputable instance : SecondCountableTopology MeasuredGHSpace.{u} :=
 theorem separableSpace : SeparableSpace MeasuredGHSpace.{u} := inferInstance
 
 end BGW.MetricMeasure.MeasuredGHSpace
+

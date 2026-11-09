@@ -45,11 +45,13 @@ noncomputable def path (ω : ℝ≥0 → ℝ) : C(unitInterval, ℝ) :=
 theorem path_nonneg (ω : ℝ≥0 → ℝ) (t : unitInterval) : 0 ≤ path ω t :=
   Vervaat.vervaat_nonneg _ t
 
-@[simp] theorem path_zero (ω : ℝ≥0 → ℝ) : path ω 0 = 0 :=
-  Vervaat.vervaat_zero _
+@[simp] theorem path_zero (ω : ℝ≥0 → ℝ) : path ω 0 = 0 := by
+  rw [path, Vervaat.vervaat_apply]
+  exact Vervaat.vervaat_zero _
 
-@[simp] theorem path_one (ω : ℝ≥0 → ℝ) : path ω 1 = 0 :=
-  Vervaat.vervaat_one _
+@[simp] theorem path_one (ω : ℝ≥0 → ℝ) : path ω 1 = 0 := by
+  rw [path, Vervaat.vervaat_apply]
+  exact Vervaat.vervaat_one _
 
 /-- The actual Vervaat path law on the continuous-path space. -/
 noncomputable def law : ProbabilityMeasure C(unitInterval, ℝ) :=

@@ -162,3 +162,4 @@ lemma integrable_rpow_abs_mul_exp_neg {s p c : ℝ} (hs : -1 < s) (hp : 0 < p) (
     (integrableOn_rpow_mul_exp_neg_mul_rpow hs hp hc)
 
 end BGW.StableTrees.Scalar
+
