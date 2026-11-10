@@ -1,5 +1,7 @@
 # Random Trees in Lean
 
+**[Browse the API documentation](https://igor-kortchemski.github.io/random-trees-lean/)**
+
 A Lean 4 library on random trees and the classical probability behind their scaling limits:
 finite and locally finite Bienaymé–Galton–Watson (BGW) trees, the Skorokhod space and
 weak-convergence tools, the spectrally positive stable Lévy process with its excursion theory
