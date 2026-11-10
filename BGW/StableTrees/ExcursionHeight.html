@@ -1,0 +1,50 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>BGW.StableTrees.ExcursionHeight</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="BGW.StableTrees.ExcursionHeight";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">BGW</span>.<span class="name">StableTrees</span>.<span class="name">ExcursionHeight</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/StableTrees/ExcursionHeight.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././BGW/StableTrees/ExcursionHeightNormalization.html">BGW.StableTrees.ExcursionHeightNormalization</a></li><li><a href="../.././BGW/StableTrees/ExcursionHeightPositivity.html">BGW.StableTrees.ExcursionHeightPositivity</a></li><li><a href="../.././BGW/StableTrees/ExcursionHeightTwo.html">BGW.StableTrees.ExcursionHeightTwo</a></li><li><a href="../.././BGW/StableTrees/ExcursionHeightUnitIdentification.html">BGW.StableTrees.ExcursionHeightUnitIdentification</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-BGW.StableTrees.ExcursionHeight" class="imported-by-list"></ul></details></div></nav><main>
+<div class="mod_doc"><h1 id="Continuous-height-of-a-stable-excursion" class="markdown-heading">Continuous height of a stable excursion <a class="hover-link" href="#Continuous-height-of-a-stable-excursion">#</a></h1><p>This module exports the complete a.e.-age excursion-height interface. Host a.e.-time
+agreement, predictable compensation of pre-start occupation and passage endpoint zeros give
+simultaneous locality and non-junk. Compensation transfers existence and interior positivity
+to the excursion measure. Surviving-age convergence identifies scaling before identification
+at each real age. Unit prefix densities transfer raw scaling, and the shape/lifetime product
+supplies the terminal trace. The common prefix graphs, unit scaling, normalization and the
+variance-two Brownian identification use the same continuous reconstruction throughout.</p><h2 id="Additional-public-helpers-in-the-endpoint-locality-scaling-completion" class="markdown-heading">Additional public helpers in the endpoint/locality/scaling completion <a class="hover-link" href="#Additional-public-helpers-in-the-endpoint-locality-scaling-completion">#</a></h2><ul><li><code>measurable_excursionHeight_real_age</code>: Joint real-age evaluation of the continuous excursion
+height is measurable.</li><li><code>measurable_heightUniv_excursion_real_age</code>: Joint real-age evaluation of the universal excursion
+height is measurable.</li><li><code>ae_heightUniv_eq_excursionHeight_ages</code>: The universal height agrees with the continuous version
+on surviving age windows.</li><li><code>ae_tendsto_excursionHeight_ages</code>: Universal cutoffs converge to the continuous version on
+surviving age windows.</li><li><code>heightApprox_tendstoInMeasure_excursionHeight_ages</code>: Full-filter identification with the
+continuous height on each finite surviving-age window.</li><li><code>passageTime_tendsto_left</code>: On finite passages, the passage process tends to its finite left
+reading from the left.</li><li><code>ae_heightLoc_passageEndpoints_all</code>: Height vanishes at both passage readings simultaneously at
+all levels.</li><li><code>measurable_excursion_heightApprox</code>: Fixed-age excursion occupation approximations are
+measurable.</li><li><code>tendstoInMeasure_continuous_comp_filter</code>: Continuous real tests preserve convergence in measure
+along a countably generated filter.</li><li><code>exists_age_heightApprox_tendstoInMeasure_excursionHeight</code>: At least one deterministic positive
+age identifies the continuous excursion height.</li><li><code>map_excursionScale_survival</code>: Scaling carries a survival restriction to the scaled restriction,
+with the usual mass factor.</li><li><code>heightApprox_tendstoInMeasure_excursionHeight_dilate</code>: Good ages for full-filter continuous-
+height identification are preserved by dilation.</li><li><code>map_shiftAt_firstPassageBelow</code>: The post-passage centered path has the full local stable law at
+each fixed level.</li><li><code>futureInf_neg_of_regularBelowAtZero</code>: Regularity below zero implies a negative future infimum
+at every positive age.</li><li><code>ae_heightLoc_passageTime_fixed</code>: At every fixed passage level the continuous host height is
+zero almost surely.</li><li><code>heightWindowInf</code>: The infimum of a local path on a compact window.</li><li><code>heightWindowInf_le_eval</code>: A compact window infimum bounds each value in the window.</li><li><code>exists_heightWindow_ancestor</code>: A generalized minimum gives an ancestral contact in a compact
+window.</li><li><code>heightLoc_pos_of_ancestor_window</code>: The rational clock formulas exclude a zero continuous height
+above a positive ancestor.</li><li><code>heightWindowInf_cut</code>: Compact window infima commute with a valid excursion cut.</li><li><code>heightLoc_pos_of_window</code>: A compact minimum above a previous level forces a positive continuous
+height.</li><li><code>ae_jumpExcursion_height_pos</code>: Every host jump mark has strictly positive continuous height at
+every interior age.</li><li><code>measurableSet_excursionHeight_pos</code>: Strict positivity at every interior age is a Borel event of
+the excursion.</li><li><code>ae_positive_translate</code>: Translation by any nonnegative time preserves an a.e. property of
+positive real times.</li><li><code>heightApprox_eq_shift_of_past_min</code>: A centered shift with negative future infimum removes all
+sufficiently shallow old mass.</li><li><code>heightUniv_eq_shift_of_past_min</code>: Universal heights restart after a past minimum whenever the
+fresh infimum is negative.</li><li><code>heightLoc_zero_of_raw_restart</code>: A.e. raw restart and continuity identify the continuous height
+at the restart time.</li><li><code>ae_excursionHeight_scale_ages</code>: Fixed-scale height equality on each finite surviving excursion
+age window.</li><li><code>excursionHeight_scale_of_ae</code>: Almost-everywhere interior scale equality determines the two
+continuous heights everywhere.</li><li><code>futureInf_scaleLoc</code>: Positive stable scaling transports a future infimum on the corresponding
+time window.</li><li><code>heightApprox_scaleLoc</code>: The height occupation approximation obeys exact space-time scaling at
+every cutoff.</li><li><code>quasiMeasurePreserving_excursion_age_scale</code>: Joint age/mark dilation preserves null sets on the
+corresponding surviving age windows.</li><li><code>continuous_eq_iff_rat_toNNReal</code>: Equality of two continuous functions is determined by
+nonnegative rational ages.</li><li><code>measurableSet_excursionHeight_scale</code>: The all-age scaling event is jointly Borel in the scale
+and excursion.</li><li><code>ae_heightLoc_two_for_excursion</code>: <strong>C26 (K17).</strong>  At <code>θ = 2</code>, almost surely, the continuous
+height is <code>X - I</code> at every time.</li><li><code>continuous_eq_dLoc_iff_rat</code>: A continuous function and a càdlàg path agree everywhere iff they
+agree at rational ages.</li><li><code>measurableSet_excursionHeight_eq_path</code>: The all-age equality of the continuous height with the
+excursion path is Borel.</li><li><code>ae_tendsto_rescaled_heightUniv_ages</code>: Rescaled universal cutoffs converge at almost every
+surviving excursion age.</li><li><code>ae_tendsto_heightUniv_unit_of_prefix</code>: A convergent cutoff sequence with its universal-height
+limit transfers through prefix laws.</li><li><code>ae_age_tendsto_rescaled_heightUniv_unit</code>: At almost every unit age the rescaled cutoff sequence
+has the universal-height limit.</li><li><code>ae_heightUniv_scale_unit_ages</code>: Raw height scaling at almost every unit age, before choosing a
+unit continuous version.</li><li><code>isExcursionHeightVersion_scale_of_ae</code>: Scaling a continuous version gives a version when the
+raw scaling identity holds a.e.</li><li><code>exists_isExcursionHeightVersion_of_scale</code>: A version at a fixed scale pulls back whenever the
+raw heights obey the a.e.-age identity.</li><li><code>lifetimeLaw_ne_zero_of_height_index</code>: The positive lifetime mixing measure is nonzero for a
+valid stable index.</li></ul></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

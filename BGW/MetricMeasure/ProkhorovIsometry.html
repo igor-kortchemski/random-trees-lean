@@ -1,0 +1,83 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>BGW.MetricMeasure.ProkhorovIsometry</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="BGW.MetricMeasure.ProkhorovIsometry";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ProkhorovIsometry</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/ProkhorovIsometry.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././BGW/MetricMeasure/ProkhorovBounds.html">BGW.MetricMeasure.ProkhorovBounds</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-BGW.MetricMeasure.ProkhorovIsometry" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.preimage_thickening_image_of_isometry"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">preimage_thickening_image_of_isometry</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.levyProkhorovEDist_map_isometry"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">levyProkhorovEDist_map_isometry</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.levyProkhorovDist_map_isometry"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">levyProkhorovDist_map_isometry</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="Prokhorov-distance-under-compact-isometric-embeddings" class="markdown-heading">Prokhorov distance under compact isometric embeddings <a class="hover-link" href="#Prokhorov-distance-under-compact-isometric-embeddings">#</a></h1><p>A compact isometric image is Borel, so every source Borel test set can be
+transported to the ambient space. Its thickening has exactly the original
+preimage. Together with contraction this gives equality of Prokhorov distances.</p><p>Adapted from <code><a href="../.././Freezing2/Probability/ProkhorovIsometry.html">Freezing2/Probability/ProkhorovIsometry.lean</a></code> in
+<code>igor-kortchemski/uniform-attachment-freezing-scaling-limits</code>, commit
+<code>8bace72d36cdf7d250414f3d98acfaa415de23d9</code> (Apache-2.0).</p></div><div class="decl" id="BGW.MetricMeasure.preimage_thickening_image_of_isometry"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/ProkhorovIsometry.lean#L28-L38">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/ProkhorovIsometry.html#BGW.MetricMeasure.preimage_thickening_image_of_isometry"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">preimage_thickening_image_of_isometry</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">f</span> : <span class="fn"><span class="fn">X</span> → <span class="fn">Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hf</span> : <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Isometry.html#Isometry">Isometry</a> <span class="fn">f</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">r</span> : <a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">B</span> : <span class="fn"><a href="../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">f</span> <a href="../.././Mathlib/Data/Set/Operations.html#Set.preimage">⁻¹'</a> <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Thickening.html#Metric.thickening">Metric.thickening</a> <span class="fn">r</span> (<span class="fn">f</span> <a href="../.././Mathlib/Data/Set/Defs.html#Set.image">''</a> <span class="fn">B</span>)</span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Thickening.html#Metric.thickening">Metric.thickening</a> <span class="fn">r</span> <span class="fn">B</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.levyProkhorovEDist_map_isometry"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/ProkhorovIsometry.lean#L40-L57">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/ProkhorovIsometry.html#BGW.MetricMeasure.levyProkhorovEDist_map_isometry"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">levyProkhorovEDist_map_isometry</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ </span><span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">ν</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">f</span> : <span class="fn"><span class="fn">X</span> → <span class="fn">Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hf</span> : <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Isometry.html#Isometry">Isometry</a> <span class="fn">f</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/LevyProkhorovMetric.html#MeasureTheory.levyProkhorovEDist">MeasureTheory.levyProkhorovEDist</a> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">f</span> <span class="fn">μ</span>)</span> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">f</span> <span class="fn">ν</span>)</span></span> <a href="../.././Init/Prelude.html#Eq">=</a>   <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/LevyProkhorovMetric.html#MeasureTheory.levyProkhorovEDist">MeasureTheory.levyProkhorovEDist</a> <span class="fn">μ</span> <span class="fn">ν</span></span></div></div><p>A compact isometric embedding preserves the full extended Prokhorov
+distance, not merely its vanishing or topology.</p></div></div><div class="decl" id="BGW.MetricMeasure.levyProkhorovDist_map_isometry"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/ProkhorovIsometry.lean#L59-L66">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/ProkhorovIsometry.html#BGW.MetricMeasure.levyProkhorovDist_map_isometry"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">levyProkhorovDist_map_isometry</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X</span> : <a href="../.././foundational_types.html">Type</a> u_1}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u_2}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ </span><span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">ν</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">f</span> : <span class="fn"><span class="fn">X</span> → <span class="fn">Y</span></span>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hf</span> : <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Isometry.html#Isometry">Isometry</a> <span class="fn">f</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/LevyProkhorovMetric.html#MeasureTheory.levyProkhorovDist">MeasureTheory.levyProkhorovDist</a> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">f</span> <span class="fn">μ</span>)</span> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">f</span> <span class="fn">ν</span>)</span></span> <a href="../.././Init/Prelude.html#Eq">=</a>   <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/LevyProkhorovMetric.html#MeasureTheory.levyProkhorovDist">MeasureTheory.levyProkhorovDist</a> <span class="fn">μ</span> <span class="fn">ν</span></span></div></div><p>The real Prokhorov distance is likewise unchanged.</p></div></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

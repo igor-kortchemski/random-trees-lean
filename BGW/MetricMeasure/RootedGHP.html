@@ -1,0 +1,345 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>BGW.MetricMeasure.RootedGHP</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="BGW.MetricMeasure.RootedGHP";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">RootedGHP</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././BGW/MetricMeasure/GHPSeparation.html">BGW.MetricMeasure.GHPSeparation</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-BGW.MetricMeasure.RootedGHP" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.GHPCoupling.rootedCost"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">GHPCoupling</span>.<span class="name">rootedCost</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.GHPCoupling.rootedCost_nonneg"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">GHPCoupling</span>.<span class="name">rootedCost_nonneg</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPCosts"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPDistance"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPCosts_bddBelow"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts_bddBelow</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPCosts_nonempty"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts_nonempty</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPDistance_nonneg"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_nonneg</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPDistance_le_of_coupling"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_le_of_coupling</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPDistance_le_of_isometries"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_le_of_isometries</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPCosts_comm"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts_comm</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.rootedGHPDistance_comm"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_comm</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpDistance_le_rootedGHPDistance"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_le_rootedGHPDistance</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="The-rooted-Gromov-Hausdorff-Prokhorov-infimum" class="markdown-heading">The rooted Gromov–Hausdorff–Prokhorov infimum <a class="hover-link" href="#The-rooted-Gromov-Hausdorff-Prokhorov-infimum">#</a></h1><p>A rooted ambient cost is the distance between the embedded roots plus the
+existing Lévy–Prokhorov and whole-carrier Hausdorff cost. In particular, the
+root contribution is an actual distance, not the Prokhorov distance between
+Dirac measures. Roots need not belong to the support of the measure.</p><p>All carriers and ambient realizations lie in the same universe. As for the
+unrooted infimum, the raw definitions accept arbitrary measures; the intended
+metric setting consists of compact nonempty Borel probability spaces.</p><p>This extends the existing <code>GHPCoupling</code> and unrooted infimum, adapted from
+<code><a href="../.././Freezing2/Geometry/GHPSeparation.html">Freezing2/Geometry/GHPSeparation.lean</a></code> and <code>GromovHausdorffProkhorov.lean</code> in
+<code>igor-kortchemski/uniform-attachment-freezing-scaling-limits</code>, commit
+<code>8bace72d36cdf7d250414f3d98acfaa415de23d9</code> (Apache-2.0).</p></div><div class="decl" id="BGW.MetricMeasure.GHPCoupling.rootedCost"><div class="def"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L41-L44">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.GHPCoupling.rootedCost"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">GHPCoupling</span>.<span class="name">rootedCost</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">C</span> : <span class="fn"><a href="../.././BGW/MetricMeasure/GHPSeparation.html#BGW.MetricMeasure.GHPCoupling">GHPCoupling</a> <span class="fn">X</span> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a></div></div><p>Root distance plus the existing summed measured GHP cost.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><span class="fn"><span class="fn">C</span>.<a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.GHPCoupling.rootedCost">rootedCost</a></span> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">(<span class="fn"><span class="fn">C</span>.<a href="../.././BGW/MetricMeasure/GHPSeparation.html#BGW.MetricMeasure.GHPCoupling.left">left</a></span> <span class="fn">x</span>)</span> <span class="fn">(<span class="fn"><span class="fn">C</span>.<a href="../.././BGW/MetricMeasure/GHPSeparation.html#BGW.MetricMeasure.GHPCoupling.right">right</a></span> <span class="fn">y</span>)</span></span> <a href="../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn"><span class="fn"><span class="fn">C</span>.<a href="../.././BGW/MetricMeasure/GHPSeparation.html#BGW.MetricMeasure.GHPCoupling.cost">cost</a></span> <span class="fn">μ</span> <span class="fn">ν</span></span></li></ul></details><details id="instances-for-list-BGW.MetricMeasure.GHPCoupling.rootedCost" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="BGW.MetricMeasure.GHPCoupling.rootedCost_nonneg"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L46-L48">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.GHPCoupling.rootedCost_nonneg"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">GHPCoupling</span>.<span class="name">rootedCost_nonneg</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">C</span> : <span class="fn"><a href="../.././BGW/MetricMeasure/GHPSeparation.html#BGW.MetricMeasure.GHPCoupling">GHPCoupling</a> <span class="fn">X</span> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">0</span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><span class="fn"><span class="fn">C</span>.<a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.GHPCoupling.rootedCost">rootedCost</a></span> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPCosts"><div class="def"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L55-L68">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a></span></div></div><p>Costs of common ambient isometric realizations, including the distance between roots.</p><p>The compactness and Borel assumptions are not used by the formula; they fix its domain.
+Compactness of both carriers, together with their nonemptiness (automatic for the carriers of
+probability measures, as in <code>RootedCompactMeasuredSpace</code>), makes the Hausdorff distance between the
+embedded carriers finite. Compactness alone does not exclude an empty carrier facing a nonempty
+one, in which case Mathlib's real <code>hausdorffDist</code> takes its default value <code>0</code>. The Borel
+assumptions make the isometric embeddings measurable, so that the pushforward measures in the
+Lévy–Prokhorov term are meaningful (<code>Measure.map</code> of a non-measurable map is <code>0</code>); they play no
+role in the finiteness of the Hausdorff term.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts">BGW.MetricMeasure.rootedGHPCosts</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span> <a href="../.././Init/Prelude.html#Eq">=</a> <a href="../.././Mathlib/Data/Set/Defs.html#Set.ofPred">{</a><span class="fn">r</span> <a href="../.././Mathlib/Data/Set/Defs.html#Set.ofPred">:</a> <a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a> <a href="../.././Mathlib/Data/Set/Defs.html#Set.ofPred">|</a> <span class="fn">∃ (<span class="fn">C</span> : <span class="fn"><a href="../.././BGW/MetricMeasure/GHPSeparation.html#BGW.MetricMeasure.GHPCoupling">BGW.MetricMeasure.GHPCoupling</a> <span class="fn">X</span> <span class="fn">Y</span></span>), <span class="fn">r</span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><span class="fn"><span class="fn">C</span>.<a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.GHPCoupling.rootedCost">rootedCost</a></span> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span></span><a href="../.././Mathlib/Data/Set/Defs.html#Set.ofPred">}</a></li></ul></details><details id="instances-for-list-BGW.MetricMeasure.rootedGHPCosts" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPDistance"><div class="def"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L70-L75">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a></div></div><p>The rooted GHP infimum on represented compact measured spaces. Its compactness and Borel
+assumptions fix the domain, as explained for <code><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts">rootedGHPCosts</a></code>.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance">BGW.MetricMeasure.rootedGHPDistance</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../.././Mathlib/Order/Bounds/Defs.html#InfSet.sInf">sInf</a> <span class="fn">(<a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts">BGW.MetricMeasure.rootedGHPCosts</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span>)</span></span></li></ul></details><details id="instances-for-list-BGW.MetricMeasure.rootedGHPDistance" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPCosts_bddBelow"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L79-L83">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts_bddBelow"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts_bddBelow</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././Mathlib/Order/Bounds/Defs.html#BddBelow">BddBelow</a> <span class="fn">(<a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts">rootedGHPCosts</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span>)</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPCosts_nonempty"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L85-L91">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts_nonempty"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts_nonempty</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">(<a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts">rootedGHPCosts</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span>)</span>.<a href="../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPDistance_nonneg"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L93-L97">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance_nonneg"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_nonneg</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">0</span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance">rootedGHPDistance</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPDistance_le_of_coupling"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L99-L104">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance_le_of_coupling"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_le_of_coupling</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">C</span> : <span class="fn"><a href="../.././BGW/MetricMeasure/GHPSeparation.html#BGW.MetricMeasure.GHPCoupling">GHPCoupling</a> <span class="fn">X</span> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance">rootedGHPDistance</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><span class="fn"><span class="fn">C</span>.<a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.GHPCoupling.rootedCost">rootedCost</a></span> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span></div></div><p>Every actual ambient realization gives an upper bound for the rooted infimum.</p></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPDistance_le_of_isometries"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L106-L114">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance_le_of_isometries"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_le_of_isometries</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">Z</span> : <a href="../.././foundational_types.html">Type</a> u)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Z</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">i</span> : <span class="fn"><span class="fn">X</span> → <span class="fn">Z</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">j</span> : <span class="fn"><span class="fn">Y</span> → <span class="fn">Z</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hi</span> : <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Isometry.html#Isometry">Isometry</a> <span class="fn">i</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hj</span> : <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Isometry.html#Isometry">Isometry</a> <span class="fn">j</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance">rootedGHPDistance</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a>   <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">(<span class="fn">i</span> <span class="fn">x</span>)</span> <span class="fn">(<span class="fn">j</span> <span class="fn">y</span>)</span></span> <a href="../.././Init/Prelude.html#HAdd.hAdd">+</a>     (<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/LevyProkhorovMetric.html#MeasureTheory.levyProkhorovDist">MeasureTheory.levyProkhorovDist</a> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">i</span> <span class="fn">μ</span>)</span> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">j</span> <span class="fn">ν</span>)</span></span> <a href="../.././Init/Prelude.html#HAdd.hAdd">+</a>       <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/HausdorffDistance.html#Metric.hausdorffDist">Metric.hausdorffDist</a> <span class="fn">(<a href="../.././Mathlib/Data/Set/Operations.html#Set.range">Set.range</a> <span class="fn">i</span>)</span> <span class="fn">(<a href="../.././Mathlib/Data/Set/Operations.html#Set.range">Set.range</a> <span class="fn">j</span>)</span></span>)</div></div><p>A common ambient pair of isometries bounds the rooted GHP distance.</p></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPCosts_comm"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L116-L126">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts_comm"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPCosts_comm</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts">rootedGHPCosts</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPCosts">rootedGHPCosts</a> <span class="fn">ν</span> <span class="fn">μ</span> <span class="fn">y</span> <span class="fn">x</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.rootedGHPDistance_comm"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L128-L130">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance_comm"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">rootedGHPDistance_comm</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance">rootedGHPDistance</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance">rootedGHPDistance</a> <span class="fn">ν</span> <span class="fn">μ</span> <span class="fn">y</span> <span class="fn">x</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.ghpDistance_le_rootedGHPDistance"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/RootedGHP.lean#L132-L139">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.ghpDistance_le_rootedGHPDistance"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_le_rootedGHPDistance</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">x</span> : <span class="fn">X</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">y</span> : <span class="fn">Y</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance">ghpDistance</a> <span class="fn">μ</span> <span class="fn">ν</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../.././BGW/MetricMeasure/RootedGHP.html#BGW.MetricMeasure.rootedGHPDistance">rootedGHPDistance</a> <span class="fn">μ</span> <span class="fn">ν</span> <span class="fn">x</span> <span class="fn">y</span></span></div></div><p>Forgetting the roots can only decrease the represented distance.</p></div></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>

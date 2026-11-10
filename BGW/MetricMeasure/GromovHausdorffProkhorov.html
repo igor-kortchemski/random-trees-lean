@@ -1,0 +1,218 @@
+<html lang="en"><head><meta charset="UTF-8"></meta><meta name="viewport" content="width=device-width, initial-scale=1"></meta><link rel="stylesheet" href="../.././style.css"></link><link rel="icon" href="../.././favicon.svg"></link><link rel="mask-icon" href="../.././favicon.svg" color="#000000"></link><link rel="prefetch" href="../.././/declarations/declaration-data.bmp" as="image"></link><title>BGW.MetricMeasure.GromovHausdorffProkhorov</title><script defer="true" src="../.././mathjax-config.js"></script><script defer="true" src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script defer="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script><script>const SITE_ROOT="../.././";</script><script>const MODULE_NAME="BGW.MetricMeasure.GromovHausdorffProkhorov";</script><script type="module" src="../.././jump-src.js"></script><script type="module" src="../.././search.js"></script><script type="module" src="../.././expand-nav.js"></script><script type="module" src="../.././how-about.js"></script><script type="module" src="../.././instances.js"></script><script type="module" src="../.././importedBy.js"></script></head><body><input id="nav_toggle" type="checkbox"></input><header><h1><label for="nav_toggle"></label><span>Documentation</span></h1><h2 class="header_filename break_within"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">GromovHausdorffProkhorov</span></h2><form id="search_form"><input type="text" name="q" autocomplete="off"></input>&#32;<button id="search_button" onclick="javascript: form.action='../.././search.html';">Search</button></form></header><nav class="internal_nav"><p><a href="#top">return to top</a></p><p class="gh_nav_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean">source</a></p><div class="imports"><details><summary>Imports</summary><ul><li><a href="../.././Init.html">Init</a></li><li><a href="../.././BGW/MetricMeasure/MeasuredGluing.html">BGW.MetricMeasure.MeasuredGluing</a></li></ul></details><details><summary>Imported by</summary><ul id="imported-by-BGW.MetricMeasure.GromovHausdorffProkhorov" class="imported-by-list"></ul></details></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpCosts"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpCosts</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpDistance"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpCosts_bddBelow"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpCosts_bddBelow</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpCosts_nonempty"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpCosts_nonempty</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpDistance_nonneg"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_nonneg</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpDistance_le_of_isometries"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_le_of_isometries</span></a></div><div class="nav_link"><a class="break_within" href="#BGW.MetricMeasure.ghpDistance_le_of_approx"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_le_of_approx</span></a></div></nav><main>
+<div class="mod_doc"><h1 id="The-Gromov-Hausdorff-Prokhorov-infimum" class="markdown-heading">The Gromov–Hausdorff–Prokhorov infimum <a class="hover-link" href="#The-Gromov-Hausdorff-Prokhorov-infimum">#</a></h1><p>The cost is the sum of Lévy–Prokhorov and Hausdorff distances after isometric
+embeddings into one ambient metric space. Hausdorff distance uses the images
+of the whole carriers, with no full-support assumption on the measures. The
+spaces and ambient realizations lie in the same universe.</p><p>The intended GHP setting is nonempty compact metric spaces with Borel probability
+measures. The raw infimum below also accepts arbitrary measures, as in the source.
+This module supplies nonnegativity and upper bounds on represented spaces;
+the triangle inequality, separation and passage to isometry classes are separate
+obligations.</p><p>Adapted from <code><a href="../.././Freezing2/Geometry/GromovHausdorffProkhorov.html">Freezing2/Geometry/GromovHausdorffProkhorov.lean</a></code> in
+<code>igor-kortchemski/uniform-attachment-freezing-scaling-limits</code>, commit
+<code>8bace72d36cdf7d250414f3d98acfaa415de23d9</code> (Apache-2.0).</p></div><div class="decl" id="BGW.MetricMeasure.ghpCosts"><div class="def"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean#L41-L60">source</a></div><div class="decl_header"><span class="decl_kind">def</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpCosts"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpCosts</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././Mathlib/Data/Set/Defs.html#Set">Set</a> <a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a></span></div></div><p>The costs of all common ambient realizations in the same universe, with
+their Borel measurable structures and isometric embeddings of the whole carriers.</p><p>The compactness and Borel assumptions are not used by the formula; they fix its domain.
+Compactness of both carriers, together with their nonemptiness (automatic for the carriers of
+probability measures, as in <code>CompactMeasuredSpace</code>), makes the Hausdorff distance between the
+embedded carriers finite. Compactness alone does not exclude an empty carrier facing a nonempty
+one, in which case Mathlib's real <code>hausdorffDist</code> takes its default value <code>0</code>. The Borel
+assumptions make the isometric embeddings measurable, so that the pushforward measures in the
+Lévy–Prokhorov term are meaningful (<code>Measure.map</code> of a non-measurable map is <code>0</code>); they play no
+role in the finiteness of the Hausdorff term.</p><details><summary>Equations</summary><ul class="equations"><li class="equation">One or more equations did not get rendered due to their size.</li></ul></details><details id="instances-for-list-BGW.MetricMeasure.ghpCosts" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="BGW.MetricMeasure.ghpDistance"><div class="def"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean#L62-L66">source</a></div><div class="decl_header"><span class="decl_kind">noncomputable def</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a></div></div><p>The GHP infimum on represented compact measured spaces, before passage to
+measure-preserving isometry classes. Its compactness and Borel assumptions fix the domain, as
+explained for <code><a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpCosts">ghpCosts</a></code>: they are what makes the costs meaningful, for nonempty carriers.</p><details><summary>Equations</summary><ul class="equations"><li class="equation"><span class="fn"><a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance">BGW.MetricMeasure.ghpDistance</a> <span class="fn">μ</span> <span class="fn">ν</span></span> <a href="../.././Init/Prelude.html#Eq">=</a> <span class="fn"><a href="../.././Mathlib/Order/Bounds/Defs.html#InfSet.sInf">sInf</a> <span class="fn">(<a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpCosts">BGW.MetricMeasure.ghpCosts</a> <span class="fn">μ</span> <span class="fn">ν</span>)</span></span></li></ul></details><details id="instances-for-list-BGW.MetricMeasure.ghpDistance" class="instances-for-list"><summary>Instances For</summary><ul class="instances-for-enum"></ul></details></div></div><div class="decl" id="BGW.MetricMeasure.ghpCosts_bddBelow"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean#L70-L73">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpCosts_bddBelow"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpCosts_bddBelow</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././Mathlib/Order/Bounds/Defs.html#BddBelow">BddBelow</a> <span class="fn">(<a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpCosts">ghpCosts</a> <span class="fn">μ</span> <span class="fn">ν</span>)</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.ghpCosts_nonempty"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean#L75-L80">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpCosts_nonempty"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpCosts_nonempty</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><span class="fn">(<a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpCosts">ghpCosts</a> <span class="fn">μ</span> <span class="fn">ν</span>)</span>.<a href="../.././Mathlib/Data/Set/Defs.html#Set.Nonempty">Nonempty</a></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.ghpDistance_nonneg"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean#L82-L85">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance_nonneg"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_nonneg</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn">0</span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn"><a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance">ghpDistance</a> <span class="fn">μ</span> <span class="fn">ν</span></span></div></div></div></div><div class="decl" id="BGW.MetricMeasure.ghpDistance_le_of_isometries"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean#L87-L95">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance_le_of_isometries"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_le_of_isometries</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">Z</span> : <a href="../.././foundational_types.html">Type</a> u)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Z</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">i</span> : <span class="fn"><span class="fn">X</span> → <span class="fn">Z</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">j</span> : <span class="fn"><span class="fn">Y</span> → <span class="fn">Z</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hi</span> : <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Isometry.html#Isometry">Isometry</a> <span class="fn">i</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hj</span> : <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Isometry.html#Isometry">Isometry</a> <span class="fn">j</span></span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance">ghpDistance</a> <span class="fn">μ</span> <span class="fn">ν</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a>   <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/LevyProkhorovMetric.html#MeasureTheory.levyProkhorovDist">MeasureTheory.levyProkhorovDist</a> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">i</span> <span class="fn">μ</span>)</span> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">j</span> <span class="fn">ν</span>)</span></span> <a href="../.././Init/Prelude.html#HAdd.hAdd">+</a>     <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/HausdorffDistance.html#Metric.hausdorffDist">Metric.hausdorffDist</a> <span class="fn">(<a href="../.././Mathlib/Data/Set/Operations.html#Set.range">Set.range</a> <span class="fn">i</span>)</span> <span class="fn">(<a href="../.././Mathlib/Data/Set/Operations.html#Set.range">Set.range</a> <span class="fn">j</span>)</span></span></div></div><p>Any common ambient realization gives an upper bound for the GHP infimum.</p></div></div><div class="decl" id="BGW.MetricMeasure.ghpDistance_le_of_approx"><div class="theorem"><div class="gh_link"><a href="https://github.com/igor-kortchemski/random-trees-lean/blob/200ef714995a379fc6811db34847f47ed5f2f006/BGW/MetricMeasure/GromovHausdorffProkhorov.lean#L97-L115">source</a></div><div class="decl_header"><span class="decl_kind">theorem</span>
+<span class="decl_name"><a class="break_within" href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance_le_of_approx"><span class="name">BGW</span>.<span class="name">MetricMeasure</span>.<span class="name">ghpDistance_le_of_approx</span></a></span><span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">X </span><span class="fn">Y</span> : <a href="../.././foundational_types.html">Type</a> u}</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Defs.html#MetricSpace">MetricSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#MeasurableSpace">MeasurableSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/Topology/Defs/Filter.html#CompactSpace">CompactSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Constructions/BorelSpace/Basic.html#BorelSpace">BorelSpace</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Init/Prelude.html#Nonempty">Nonempty</a> <span class="fn">X</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Init/Prelude.html#Nonempty">Nonempty</a> <span class="fn">Y</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">μ</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">X</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">ν</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/MeasureSpaceDef.html#MeasureTheory.Measure">MeasureTheory.Measure</a> <span class="fn">Y</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">μ</span></span>]</span></span>
+</span><span class="impl_arg"><span class="decl_args">
+<span class="fn">[<span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/Typeclasses/Probability.html#MeasureTheory.IsProbabilityMeasure">MeasureTheory.IsProbabilityMeasure</a> <span class="fn">ν</span></span>]</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">f</span> : <span class="fn"><span class="fn">X</span> → <span class="fn">Y</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hf</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/MeasurableSpace/Defs.html#Measurable">Measurable</a> <span class="fn">f</span></span>)</span></span>
+<span class="impl_arg"><span class="decl_args">
+<span class="fn">{<span class="fn">δ </span><span class="fn">r </span><span class="fn">p</span> : <a href="../.././Mathlib/Basic/Real/Basic.html#Real">ℝ</a>}</span></span>
+</span><span class="decl_args">
+<span class="fn">(<span class="fn">hδ</span> : <span class="fn">0</span> <a href="../.././Init/Prelude.html#LT.lt">&lt;</a> <span class="fn">δ</span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hdis</span> : <span class="fn">∀ (<span class="fn">x </span><span class="fn">x'</span> : <span class="fn">X</span>), <a href="../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a><span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">x</span> <span class="fn">x'</span></span> <a href="../.././Init/Prelude.html#HSub.hSub">-</a> <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">(<span class="fn">f</span> <span class="fn">x</span>)</span> <span class="fn">(<span class="fn">f</span> <span class="fn">x'</span>)</span></span><a href="../.././Mathlib/Algebra/Order/Group/Unbundled/Abs.html#abs">|</a> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">2</span> <a href="../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">δ</span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hdense</span> : <span class="fn">∀ (<span class="fn">y</span> : <span class="fn">Y</span>), <span class="fn">∃ (<span class="fn">x</span> : <span class="fn">X</span>), <span class="fn"><a href="../.././Mathlib/Topology/MetricSpace/Pseudo/Defs.html#Dist.dist">dist</a> <span class="fn">y</span> <span class="fn">(<span class="fn">f</span> <span class="fn">x</span>)</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">r</span></span></span>)</span></span>
+<span class="decl_args">
+<span class="fn">(<span class="fn">hprob</span> : <span class="fn"><a href="../.././Mathlib/MeasureTheory/Measure/LevyProkhorovMetric.html#MeasureTheory.levyProkhorovDist">MeasureTheory.levyProkhorovDist</a> <span class="fn">(<a href="../.././Mathlib/MeasureTheory/Measure/Map.html#MeasureTheory.Measure.map">MeasureTheory.Measure.map</a> <span class="fn">f</span> <span class="fn">μ</span>)</span> <span class="fn">ν</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">p</span>)</span></span>
+<span class="decl_args"> :</span><div class="decl_type"><span class="fn"><a href="../.././BGW/MetricMeasure/GromovHausdorffProkhorov.html#BGW.MetricMeasure.ghpDistance">ghpDistance</a> <span class="fn">μ</span> <span class="fn">ν</span></span> <a href="../.././Init/Prelude.html#LE.le">≤</a> <span class="fn">2</span> <a href="../.././Init/Prelude.html#HMul.hMul">*</a> <span class="fn">δ</span> <a href="../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">r</span> <a href="../.././Init/Prelude.html#HAdd.hAdd">+</a> <span class="fn">p</span></div></div><p>A measurable map with small distortion, dense image and close pushed
+measure gives a quantitative GHP upper bound.</p></div></div></main>
+<nav class="nav"><iframe src="../.././navbar.html" class="navframe" frameBorder="0"></iframe></nav></body></html>
